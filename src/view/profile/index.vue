@@ -1,5 +1,5 @@
 <template>
-  <div class="profile"></div>
+  <div class="profile">个人nft展示</div>
 </template>
 
 <script>

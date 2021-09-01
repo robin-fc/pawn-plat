@@ -9,7 +9,8 @@ const DIC_ZH = {
     rentToggleTitle: ["可供租赁", "正在租赁"],
     lendToggleTitle: ["可供出租", "正在出租"],
     constractAddress: "合约地址",
-    appVersion: "当前版本"
+    appVersion: "当前版本",
+    toggleInfo: "请连接小狐狸钱包!"
 }
 const DIC_EN = {
     nftTypePlaceholder: "ALL NFTS",
@@ -22,7 +23,8 @@ const DIC_EN = {
     rentToggleTitle: ["AVAILABLE TO RENT", "RENTING"],
     lendToggleTitle: ["AVAILABLE TO LEND", "LENDING"],
     constractAddress: "Contract on etherscan",
-    appVersion: "App version"
+    appVersion: "App version",
+    toggleInfo: "Please connect your wallet!"
 }
 export {
     DIC_ZH,

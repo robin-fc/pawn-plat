@@ -11,7 +11,8 @@
     <div className="content-wrapper main-content mb-l">
       <div class="content">
         <Toggle />
-        <router-view />
+        <router-view/>
+        <!--  v-if="isLogin"  -->
       </div>
     </div>
     <Footer />
@@ -30,7 +31,8 @@ import MainMenu from "@/components/home/mainMenu.vue";
 import SearchMenu from "@/components/home/searchMenu.vue";
 import DevMenu from "@/components/home/devMenu.vue";
 import Footer from "@/components/home/footer.vue";
-import Toggle from '@/components/public/toggle.vue';
+import Toggle from "@/components/public/toggle.vue"; 
+import { mapGetters } from "vuex";
 
 export default {
   name: "Layout",
@@ -41,6 +43,9 @@ export default {
     DevMenu,
     Footer,
     Toggle
-  }
+  },
+  computed: {
+    ...mapGetters(["isLogin"]),
+  },
 };
 </script>

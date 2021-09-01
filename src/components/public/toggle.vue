@@ -10,15 +10,17 @@
         </div>
       </div>
     </div>
-    <div v-else>
-      <div class="center content__message">Please connect your wallet!</div>
+    <div v-if="!isLogin">
+      <div class="center content__message">
+        {{ languagePackage.toggleInfo }}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 //import PageHeaderLayout from '@/layouts/PageHeaderLayout'
-//import { mapGetters } from 'vuex'
+import { mapGetters } from "vuex";
 import languageMixin from "@/mixins/language";
 
 export default {
@@ -38,6 +40,9 @@ export default {
     language() {
       this.initSwitchTitle();
     },
+  },
+  computed: {
+    ...mapGetters(["isLogin"]),
   },
   mounted() {
     this.initSwitchTitle();

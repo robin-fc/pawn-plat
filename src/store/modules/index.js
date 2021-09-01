@@ -1,6 +1,6 @@
 import header from "./header"
-import map from "./map"
+import login from "./login"
 export {
     header,
-    map
+    login
 }

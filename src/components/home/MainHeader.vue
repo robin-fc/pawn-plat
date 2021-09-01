@@ -1,8 +1,16 @@
 <template>
   <div className="header">
     <div className="header__logo"></div>
-    <button class="metamask-connect-button">连接钱包</button>
-    <div className="header__wallet">
+    <button
+      v-if="!isLogin"
+      class="nft__button"
+      data-cy="metamask-connect-button"
+      type="button"
+      @click="handleConect"
+    >
+      连接钱包
+    </button>
+    <div v-else className="header__wallet">
       <div className="header__wallet-network">
         <p className="headline pink-text"></p>
         <p className="copy-text">
@@ -10,7 +18,7 @@
         </p>
       </div>
       <div className="header__wallet-user">
-        <a href="/profile">0x127463518456</a>
+        <a href="/profile">{{ accounts[0] }}</a>
       </div>
     </div>
   </div>
@@ -18,28 +26,21 @@
 
 <script>
 //import PageHeaderLayout from '@/layouts/PageHeaderLayout'
-//import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from "vuex";
 export default {
-  //  components: {
-  //    PageHeaderLayout,
-  //  },
   data() {
     return {};
   },
   // 计算属性，会监听依赖属性值随之变化
-  //  computed: {
-  //   ...mapGetters(['userPermissions','buttonType'])
-  // },
-  // 监控data中的数据变化
-  //watch: {},
-  // 生命周期 - 创建完成（可以访问当前this实例）
-  // created() {}
-  // beforeMount() {}, // 生命周期 - 挂载之前
-  // 生命周期 - 挂载完成（可以访问DOM元素）
-  mounted() {},
-  //beforeDestroy() {}, // 生命周期 - 销毁之前
-  // 方法集合
-  methods: {},
+  computed: {
+    ...mapGetters(["accounts", "isLogin"]),
+  },
+  methods: {
+    ...mapMutations(["setReconnect"]),
+    handleConect() {
+      this.setReconnect(new Date().getTime() + "_" + this.accounts[0]);
+    },
+  },
 };
 </script>
 

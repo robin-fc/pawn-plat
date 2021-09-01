@@ -1,19 +1,5 @@
 // The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-// import Vue from 'vue'
-// import ElementUI from 'element-ui'
-// import 'element-ui/lib/theme-chalk/index.css'
-/* eslint-disable no-new */
-// eslint-disable-next-line no-undef
-// new Vue({
-//   el: '#app',
-//   router,
-//   store,
-//   components: {
-//     App,
-//   },
-//   template: '<App/>'
-// })
+// (runtime-only or standalone) has been set in webpack.base.conf with an alias. 
 import {
   createApp
 } from 'vue'
@@ -27,4 +13,33 @@ import store from "./store"
 const app = createApp(App);
 app.use(ElementPlus);
 app.use(store);
-app.use(router).mount('#app'); 
+app.use(router).mount('#app');
+
+
+// if(window.ethereum && localStorage.token){
+//   console.log('MateMask')
+//   ethereum.on("accountsChanged", function(accounts) {
+//     if(accounts.length){
+//       console.log('metamask账户切换',accounts[0]);//一旦切换metamask账号这里就会执行
+//       console.log('metamask网络',window.ethereum.networkVersion);
+//       if(window.ethereum.networkVersion == Config.networkVersion){
+//         localStorage.setItem('token',accounts[0])
+//         Util.login(accounts[0])
+//       }else{
+//         Util.loginOut()
+//       }
+//     }
+//   });
+// }
+
+// if(localStorage.token){
+//   // 用户切换网络
+//   ethereum.on("networkChanged", function(networkIDstring) {
+//     console.log('MateMask链接网络')
+//     if(networkIDstring !==  Config.networkVersion) {
+//       localStorage.removeItem('token')
+//       Util.loginOut()
+//       console.log('MateMask链接网络', networkIDstring)
+//     }
+//   })
+// }

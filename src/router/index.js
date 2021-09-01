@@ -8,7 +8,7 @@
  import dashboard from '../view/dashboard';
  import faq from '../view/faq';
  import profile from '../view/profile';
-
+ import notFound from '../view/notFound'
 
  const routes = [{
    path: '/',
@@ -59,12 +59,42 @@
        activeMenu: 4
      },
      component: profile
-   }]
+   }, {
+     path: '/404',
+     name: '404',
+     meta: {
+       title: '404',
+       activeMenu: 7
+     },
+     component: notFound
+   }, {
+     path: "*", // 此处需特别注意置于最底部
+     meta: {
+       title: '404',
+       activeMenu: 8
+     },
+     redirect: "/404"
+   }],
  }]
 
  const router = createRouter({
    history: createWebHistory(),
    routes: routes
+ })
+
+ router.beforeEach((to, from, next) => {
+   if (to.meta.title) { // 判断该路由是我配置的路由
+     next()
+     //  next({
+     //    query: {
+     //      redirect: to.fullPath// 将跳转的路由path作为参数，登录成功后跳转到该路由
+     //    } 
+     //  })  
+   } else {
+     next({
+       path: '/404'
+     });
+   }
  })
 
  export default router;
