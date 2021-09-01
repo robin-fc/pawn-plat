@@ -8,7 +8,12 @@
       <SearchMenu />
     </div>
     <DevMenu />
-    <div className="content-wrapper main-content mb-l">{{children}}</div>
+    <div className="content-wrapper main-content mb-l">
+      <div class="content">
+        <Toggle />
+        <router-view />
+      </div>
+    </div>
     <Footer />
   </div>
 </template>
@@ -20,11 +25,12 @@
    更新时间  2021/08/30
    备注
 */
-import MainHeader from "@/components/home/MainHeader.vue";
-import MainMenu from "@/components/home/MainMenu.vue";
-import SearchMenu from "@/components/home/SearchMenu.vue";
-import DevMenu from "@/components/home/DevMenu.vue";
-import Footer from "@/components/home/Footer.vue";
+import MainHeader from "@/components/home/mainHeader.vue";
+import MainMenu from "@/components/home/mainMenu.vue";
+import SearchMenu from "@/components/home/searchMenu.vue";
+import DevMenu from "@/components/home/devMenu.vue";
+import Footer from "@/components/home/footer.vue";
+import Toggle from '@/components/public/toggle.vue';
 
 export default {
   name: "Layout",
@@ -34,13 +40,7 @@ export default {
     SearchMenu,
     DevMenu,
     Footer,
-  },
-  computed: {},
-  data() {
-    return {};
-  },
-  mounted() {},
-  watch: {},
-  methods: {},
+    Toggle
+  }
 };
 </script>

@@ -1,18 +1,23 @@
 <template>
-  <div className="header">
-    <div className="header__logo"></div>
-    <button class="metamask-connect-button">连接钱包</button>
-    <div className="header__wallet">
-      <div className="header__wallet-network">
-        <p className="headline pink-text"></p>
-        <p className="copy-text">
-          <span className="headline pink-text">111</span>
-        </p>
-      </div>
-      <div className="header__wallet-user">
-        <a href="/profile">0x127463518456</a>
-      </div>
-    </div>
+  <div class="mint-tocken">
+    <button className="menu__item" onClick={() => mintE20(1)}>
+        Mint WETH
+      </button>
+      <button className="menu__item" onClick={() => mintE20(2)}>
+        Mint DAI
+      </button>
+      <button className="menu__item" onClick={() => mintE20(3)}>
+        Mint USDC
+      </button>
+      <button className="menu__item" onClick={() => mintE20(4)}>
+        Mint USDT
+      </button>
+      <button className="menu__item" onClick={() => mintE20(5)}>
+        Mint TUSD
+      </button>
+      <button className="menu__item" onClick={() => advanceTime(24 * 60 * 60)}>
+        Advance time
+      </button>
   </div>
 </template>
 
@@ -43,4 +48,4 @@ export default {
 };
 </script>
 
-<style lang='scss' scoped></style>
+<style lang='less' scoped></style>

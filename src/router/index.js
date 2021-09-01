@@ -2,7 +2,13 @@
    createRouter,
    createWebHistory
  } from 'vue-router'
- import Layout from '../layout/index'
+ import Layout from '../layout/index';
+ import Rent from '../view/rent';
+ import Lend from '../view/lend';
+ import dashboard from '../view/dashboard';
+ import faq from '../view/faq';
+ import profile from '../view/profile';
+
 
  const routes = [{
    path: '/',
@@ -20,7 +26,7 @@
        title: 'rent',
        activeMenu: 1
      },
-     component: () => import('../view/rent')
+     component: Rent
    }, {
      path: '/lend',
      name: 'lend',
@@ -28,15 +34,15 @@
        title: 'lend',
        activeMenu: 2
      },
-     component: () => import('../view/lend')
+     component: Lend
    }, {
-     path: '/myDashboard',
-     name: 'myDashboard',
+     path: '/dashboard',
+     name: 'dashboard',
      meta: {
-       title: 'myDashboard',
+       title: 'dashboard',
        activeMenu: 3
      },
-     component: () => import('../view/myDashboard')
+     component: dashboard
    }, {
      path: '/faq',
      name: 'faq',
@@ -44,7 +50,15 @@
        title: 'faq',
        activeMenu: 4
      },
-     component: () => import('../view/faq')
+     component: faq
+   }, {
+     path: '/profile',
+     name: 'profile',
+     meta: {
+       title: 'profile',
+       activeMenu: 4
+     },
+     component: profile
    }]
  }]
 

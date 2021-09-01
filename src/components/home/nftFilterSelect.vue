@@ -1,28 +1,39 @@
 <template>
-  <div>
-    <div
-      v-if="showMint"
-      className="content-wrapper mb-l"
-      style="flex-wrap: wrap"
+  <div class="menu__item">
+    <el-select
+      v-model="value"
+      :placeholder="languagePackage.nftTypePlaceholder"
     >
-      <!-- <MintNfts />
-      <MintTokens /> -->
-    </div>
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      >
+      </el-option>
+    </el-select>
   </div>
 </template>
 
 <script>
-//import MintNfts from '@/layouts/MintNfts'
+//import PageHeaderLayout from '@/layouts/PageHeaderLayout'
 //import { mapGetters } from 'vuex'
-const showMint = process.env.NEXT_PUBLIC_SHOW_MINT === "true";
+import languageMixin from "@/mixins/language";
 export default {
-  name: "DevMenu",
+  name: "nftFilterSelect",
   //  components: {
   //    PageHeaderLayout,
   //  },
+  mixins: [languageMixin],
   data() {
     return {
-      showMint: showMint,
+      options: [
+        {
+          value: "选项1",
+          label: "黄金糕",
+        },
+      ],
+      value: "",
     };
   },
   // 计算属性，会监听依赖属性值随之变化

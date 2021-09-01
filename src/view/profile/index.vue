@@ -1,23 +1,14 @@
 <template>
-  <div className="menu menu__search">
-    <NftFilterSelect />
-    <NftSortBySelect />
-    <LanguageSelect />
-  </div>
+  <div class="profile"></div>
 </template>
 
 <script>
-import NftFilterSelect from "./nftFilterSelect.vue";
-import NftSortBySelect from "./nftSortBySelect.vue";
-import LanguageSelect from "./languageSelect.vue";
-
+//import PageHeaderLayout from '@/layouts/PageHeaderLayout'
 //import { mapGetters } from 'vuex'
 export default {
-  components: {
-    NftFilterSelect,
-    NftSortBySelect,
-    LanguageSelect,
-  },
+  //  components: {
+  //    PageHeaderLayout,
+  //  },
   data() {
     return {};
   },

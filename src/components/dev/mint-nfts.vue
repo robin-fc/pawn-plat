@@ -1,11 +1,25 @@
 <template>
-  <div class="pp-mydashboard-container"></div>
+  <div class="">
+    <button className="menu__item" onClick={() => mintNFT(0)}>
+        Mint 721A
+      </button>
+      <button className="menu__item" onClick={() => mintNFT(1)}>
+        Mint 721B
+      </button>
+      <button className="menu__item" onClick={() => mintNFT(2)}>
+        Mint 1155A
+      </button>
+      <button className="menu__item" onClick={() => mintNFT(3)}>
+        Mint 1155B
+      </button>
+  </div>
 </template>
 
 <script>
 //import PageHeaderLayout from '@/layouts/PageHeaderLayout'
 //import { mapGetters } from 'vuex'
 export default {
+  name:"mintNFT",
 //  components: {
 //    PageHeaderLayout,
 //  },
@@ -33,4 +47,4 @@ export default {
 }
 </script>
 
-<style lang='scss' scoped></style>
+<style lang='less' scoped></style>

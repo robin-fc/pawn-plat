@@ -1,25 +1,41 @@
 <template>
-  <div className="menu menu__search">
-    <NftFilterSelect />
-    <NftSortBySelect />
-    <LanguageSelect />
+  <div class="menu__item">
+    <el-select
+      v-model="value"
+      :placeholder="languagePackage.nftSortPlaceholder"
+    >
+      <el-option
+        v-for="item in options"
+        :key="item.value"
+        :label="item.label"
+        :value="item.value"
+      >
+      </el-option>
+    </el-select>
   </div>
 </template>
 
 <script>
-import NftFilterSelect from "./nftFilterSelect.vue";
-import NftSortBySelect from "./nftSortBySelect.vue";
-import LanguageSelect from "./languageSelect.vue";
-
+//import PageHeaderLayout from '@/layouts/PageHeaderLayout'
 //import { mapGetters } from 'vuex'
+import languageMixin from "@/mixins/language";
+
 export default {
-  components: {
-    NftFilterSelect,
-    NftSortBySelect,
-    LanguageSelect,
-  },
+  //  components: {
+  //    PageHeaderLayout,
+  //  },
+  mixins: [languageMixin],
+
   data() {
-    return {};
+    return {
+      options: [
+        {
+          value: "选项1",
+          label: "黄金糕",
+        },
+      ],
+      value: "",
+    };
   },
   // 计算属性，会监听依赖属性值随之变化
   //  computed: {

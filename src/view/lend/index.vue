@@ -1,5 +1,5 @@
 <template>
-  <div class="pp-lend-container"></div>
+  <div class="content pp-lend-container"></div>
 </template>
 
 <script>
