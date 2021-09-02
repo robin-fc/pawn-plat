@@ -29,6 +29,7 @@
         </a>
         <div class="spacer"></div>
         <span
+          v-if="false"
           :class="`MuiButtonBase-root
             MuiIconButton-root
             MuiCheckbox-root 
@@ -36,8 +37,9 @@
             MuiCheckbox-colorSecondary
             MuiIconButton-colorSecondary`"
           aria-disabled="false"
-          @click="handleSelect(nft.token_id)"
-          ><span class="MuiIconButton-label"
+        >
+          <!-- @click="handleSelect(nft.token_id)" -->
+          <span class="MuiIconButton-label"
             ><input
               class="jss"
               type="checkbox"
@@ -75,7 +77,7 @@
         </span>
       </div>
       <div class="nft__image">
-        <img alt="More details will be revealed soon." :src="nft.image_url" />
+        <img :alt="nft.description" :src="nft.image_url" />
       </div>
       <div class="nft__name">{{ `${nft.name}(${getZHName(nft.name)})` }}</div>
       <div class="nft__meta_row" v-for="(meta, index) of metas" :key="index">
@@ -88,10 +90,12 @@
         </div>
       </div>
       <div class="nft__control">
-        <button class="nft__button" type="button">Lend now</button>
+        <button class="nft__button" type="button" @click="LentNow(nft)">
+          Lend now
+        </button>
       </div>
     </div>
-    <div class="batch" v-if="selectedToLend.length > 0">
+    <div class="batch" v-if="selectedToLend.length > 1">
       <div class="batch__inner">
         <div
           class="column"
@@ -117,7 +121,7 @@
 import axios from "axios";
 import dic from "@/model/counten.json";
 import languageMixin from "@/mixins/language";
-
+import { mapMutations } from "vuex";
 export default {
   name: "lend",
   mixins: [languageMixin],
@@ -128,17 +132,26 @@ export default {
     this.getAssetsFromOSByAddress();
   },
   methods: {
-    //全部取消
-    handleCancel() {
-      let item = {};
-      this.selectedToLend.forEach((s) => {
-        item = this.lendNfts.find((n) => n.token_id == s.token_id);
-        item.checked = false;
-      });
-      this.selectedToLend = [];
+    ...mapMutations(["setSelectedNftLend"]),
+    LentNow(nft) {
+      this.selectedToLend = [
+        {
+          token_id: nft.token_id,
+        },
+      ];
+      this.setSelectedNftLend(this.selectedToLend);
     },
+    //全部取消
+    // handleCancel() {
+    //   let item = {};
+    //   this.selectedToLend.forEach((s) => {
+    //     item = this.lendNfts.find((n) => n.token_id == s.token_id);
+    //     item.checked = false;
+    //   });
+    //   this.selectedToLend = [];
+    // },
     //勾选的全部出租
-    handleLendAll() {},
+    // handleLendAll() {},
     //多选
     // handleSelect(token_id) {
     //   let item = this.lendNfts.find((n) => n.token_id == token_id);
@@ -155,28 +168,28 @@ export default {
     //   }
     // },
     //单选
-    handleSelect(token_id) {
-      let vm = this;
-      function cancelOld() {
-        let item = vm.lendNfts.find((n) => (n.token_id == vm.old_token_id));
-        if (item) {
-          item.checked = false;
-        }
-      }
-      let item = this.lendNfts.find((n) => n.token_id == token_id);
-      if (item) {
-        item.checked = !item.checked;
-      }
-      if (item.checked) {
-        if (item.token_id != vm.old_token_id) {
-          cancelOld();
-          vm.old_token_id = item.token_id
-        }
-        this.selectedToLend = [item];
-      } else {
-        this.selectedToLend = [];
-      }
-    },
+    // handleSelect(token_id) {
+    //   let vm = this;
+    //   function cancelOld() {
+    //     let item = vm.lendNfts.find((n) => (n.token_id == vm.old_token_id));
+    //     if (item) {
+    //       item.checked = false;
+    //     }
+    //   }
+    //   let item = this.lendNfts.find((n) => n.token_id == token_id);
+    //   if (item) {
+    //     item.checked = !item.checked;
+    //   }
+    //   if (item.checked) {
+    //     if (item.token_id != vm.old_token_id) {
+    //       cancelOld();
+    //       vm.old_token_id = item.token_id
+    //     }
+    //     this.selectedToLend = [item];
+    //   } else {
+    //     this.selectedToLend = [];
+    //   }
+    // },
     getZHName(enname) {
       return dic.find((n) => n.en == enname).type || "";
     },
@@ -191,8 +204,7 @@ export default {
       };
       axios
         .get("https://api.opensea.io/api/v1/assets", {
-          params: params,
-          timeout: 1000,
+          params: params
         })
         .then((res) => {
           if (res && res.status == 200) {

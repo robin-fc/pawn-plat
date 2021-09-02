@@ -17,7 +17,7 @@
         min-height: 100%;
         height: 100%;
     }
-} 
+}
 
 .content-header {
     font-size: 28px;
@@ -34,9 +34,16 @@
 
     .footer__message {
         flex: 1 1 100%;
-        text-align: left;
-        color: $purple-dark;
+        text-align: center;
+        color: black;
         font-size: 18px;
+
+        .footer_address {
+            text-align: center;
+            font-size: 16px;
+            color: $blue;
+            display: block;
+        }
     }
 
     .footer__content {
@@ -118,10 +125,9 @@
     &.main-content {
         flex-grow: 1;
         display: flex;
-        border: 4px solid $black;
+        border: 2px solid $black;
         box-sizing: border-box;
-        box-shadow: 7px 7px 0 $black;
-        background-image: linear-gradient($orange-dark 0%, $purple-dark 100%);
+        background-image: linear-gradient($orange 0%, $pink-dark 100%);
         z-index: 10;
     }
 
@@ -174,14 +180,12 @@
         }
 
         &-user {
-            background: #fdfff9;
-            color: $purple;
-            border: 4px solid $black;
+            // border: 2px solid $black;
             text-align: center;
             font-size: 18px;
             padding: 8px 18px;
             line-height: 1;
-            box-shadow: 6px 6px 0 $black;
+            // box-shadow: 6px 6px 0 $black;
         }
     }
 
@@ -236,7 +240,7 @@
     position: fixed;
     bottom: 0;
     left: 0;
-    background: $purple;
+    background: $pink;
     border-top: 8px solid $black;
     width: 100%;
     padding: 32px;
@@ -278,12 +282,12 @@
 
 .headline {
     font-family: 'Press Start 2P', cursive;
-    font-size: 14px;
+    font-size: 18px;
     line-height: 27px;
 }
 
 .pink-text {
-    color: $purple;
+    color: $pink;
 }
 
 .black-text {

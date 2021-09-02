@@ -1,6 +1,6 @@
 .modal-dialog {
     background: rgb(238, 230, 246);
-    border: 3px solid $purple;
+    border: 3px solid $pink;
     padding: 24px;
     min-width: 450px;
 
@@ -43,10 +43,10 @@
 
     &-button {
         position: sticky;
-        background: $grey-light;
         bottom: 0;
-        padding: 0 0 24px;
         z-index: 9;
         text-align: center;
     }
 }
+
+// background: $grey-light;

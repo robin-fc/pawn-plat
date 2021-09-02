@@ -1,23 +1,52 @@
 .copy {
     flex-grow: 1;
+    text-align: center;
 }
 
 .soc {
-    display: flex;
+    flex-grow: 1;
+    text-align: center;
+
+    a,
+    .gap {
+        display: inline-block;
+        width: fit-content;
+    }
+
+    span {
+        width: 40px;
+        height: 40px;
+        display: block;
+        background-size: 40px 40px;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .gap {
+        width: 60px;
+    }
+
+    .discord {
+        background-size: 40px 30px;
+    }
+
+    .twitter {
+        background-size: 36px 36px;
+    }
+
+    .opensea {
+        background-size: 46px 46px;
+    }
 }
 
 .discord {
     background: url(./img/discord.png);
-    width: 48px;
-    height: 48px;
-    display: block;
-    background-size: 48px 48px;
 }
 
 .twitter {
     background: url(./img/twitter.png);
-    width: 48px;
-    height: 48px;
-    display: block;
-    background-size: 48px 48px;
+}
+
+.opensea {
+    background: url(./img/opensea.png);
 }

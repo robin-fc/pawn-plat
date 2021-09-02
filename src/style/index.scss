@@ -13,15 +13,98 @@
 @import "dashboard";
 @import "profile";
 @import "nprogress";
-@import "video-react"; 
+@import "video-react";
 @import "media";
 
-#react-select-filter-input, #react-select-sortby-input{
-    text-transform: uppercase;
-    color: black;
+#react-select-filter-input,
+#react-select-sortby-input {
+  text-transform: uppercase;
+  color: black;
 }
 
-.MuiButtonBase-root{
+a {
+  text-decoration: none;
+}
+
+.header__wallet-user {
+  background: #0c2450;
+  background-repeat: no-repeat;
+  background-size: contain;
+  color: #eee6f6;
+  border-radius: 8px;
+
+  a {
+    color: $grey-light;
+  }
+}
+
+.routeMenu {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  align-content: flex-start;
+
+  width: 100%;
+
+  &__item {
+    background: $pink;
+    border: 0;
+    font-family: 'Press Start 2P', cursive;
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 400;
+    padding: 10px 12px;
+    text-decoration: none;
+    white-space: nowrap;
+    line-height: 1;
+    color: $white;
+    box-shadow:
+      4px 4px 0 $pink-dark,
+      3px 3px 0 $pink-dark,
+      2px 2px 0 $pink-dark,
+      1px 1px 0 $pink-dark;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+    transition: all 250ms;
+    margin-right: 24px;
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:hover {
+      color: $white;
+      background: $orange;
+      box-shadow:
+        4px 4px 0 $orange-dark,
+        3px 3px 0 $orange-dark,
+        2px 2px 0 $orange-dark,
+        1px 1px 0 $orange-dark
+    }
+
+    &-active {
+      background: $orange;
+      color: $white;
+      box-shadow: inset 3px 3px 0 $orange-dark;
+      top: 6px;
+      left: 6px;
+
+      &:before {
+        top: -4px;
+        left: -4px;
+      }
+
+      &:hover {
+        box-shadow: inset 8px 8px 0 $orange-dark;
+      }
+    }
+  }
+}
+
+
+.MuiButtonBase-root {
   color: inherit;
   border: 0;
   cursor: pointer;
@@ -41,44 +124,91 @@
   -webkit-appearance: none;
   -webkit-tap-highlight-color: transparent;
 }
+
 .MuiIconButton-root {
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    flex: 0 0 auto;
-    color: rgba(0, 0, 0, 0.54);
-    padding: 12px;
-    overflow: visible;
-    font-size: 1.5rem;
-    text-align: center;
-    transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-    border-radius: 50%;
-    .MuiIconButton-label {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  flex: 0 0 auto;
+  color: rgba(0, 0, 0, 0.54);
+  padding: 12px;
+  overflow: visible;
+  font-size: 1.5rem;
+  text-align: center;
+  transition: background-color 150ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+  border-radius: 50%;
+
+  .MuiIconButton-label {
+    width: 100%;
+    display: flex;
+    align-items: inherit;
+    justify-content: inherit;
+
+    .jss {
+      top: 0;
+      left: 0;
       width: 100%;
-      display: flex;
-      align-items: inherit;
-      justify-content: inherit;
-      .jss {
-        top: 0;
-        left: 0;
-        width: 100%;
-        cursor: inherit;
-        height: 100%;
-        margin: 0;
-        opacity: 0;
-        padding: 0;
-        z-index: 1;
-        position: absolute;
-      }
-      .MuiSvgIcon-root {
-        fill: currentColor;
-        width: 1em;
-        height: 1em;
-        display: inline-block;
-        font-size: 1.5rem;
-        transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
-        flex-shrink: 0;
-        user-select: none;
-      }
+      cursor: inherit;
+      height: 100%;
+      margin: 0;
+      opacity: 0;
+      padding: 0;
+      z-index: 1;
+      position: absolute;
+    }
+
+    .MuiSvgIcon-root {
+      fill: currentColor;
+      width: 1em;
+      height: 1em;
+      display: inline-block;
+      font-size: 1.5rem;
+      transition: fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+      flex-shrink: 0;
+      user-select: none;
     }
   }
+}
+
+.el-dialog {
+  background: #ffe18c;
+  z-index: 1;
+  border: 1px solid $black;
+  transition: all 250ms;
+
+  .el-dialog__header {
+    background: $orange;
+
+    .el-dialog__headerbtn .el-dialog__close {
+      color: $black;
+    }
+  }
+
+  .el-dialog__body {
+    background-image: url(./img/bg.png);
+    background-size: 100px 100px;
+    background-repeat: repeat;
+  }
+}
+
+.el-dialog:hover {
+  box-shadow: 3px 3px 0 $black;
+}
+
+.el-form-item__label {
+  color: $black;
+  font-size: large;
+}
+
+.el-form-item__content {
+  color: #4e4e4e; 
+  font-size: large;
+}
+
+.el-form-item {
+  margin-bottom: 20px;
+}
+
+.el-input__inner {
+  box-shadow: 4px 4px 0 #bbb;
+}

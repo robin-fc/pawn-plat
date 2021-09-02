@@ -8,7 +8,7 @@
     width: 100%;
 
     &__item {
-        background: $purple;
+        background: $pink;
         border: 0;
         font-family: 'Press Start 2P', cursive;
         text-transform: uppercase;
@@ -19,13 +19,13 @@
         white-space: nowrap;
         line-height: 1;
         color: $white;
-        box-shadow: 7px 7px 0 $purple-dark, 
-        6px 6px 0 $purple-dark, 
-        5px 5px 0 $purple-dark, 
-        4px 4px 0 $purple-dark,
-        3px 3px 0 $purple-dark,
-        2px 2px 0 $purple-dark, 
-        1px 1px 0 $purple-dark;
+        box-shadow: 7px 7px 0 $pink-dark, 
+        6px 6px 0 $pink-dark, 
+        5px 5px 0 $pink-dark, 
+        4px 4px 0 $pink-dark,
+        3px 3px 0 $pink-dark,
+        2px 2px 0 $pink-dark, 
+        1px 1px 0 $pink-dark;
         cursor: pointer;
         outline: none;
         position: relative;

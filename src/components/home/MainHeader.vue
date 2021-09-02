@@ -12,9 +12,9 @@
     </button>
     <div v-else className="header__wallet">
       <div className="header__wallet-network">
-        <p className="headline pink-text"></p>
+        <p className="headline black-text"></p>
         <p className="copy-text">
-          <span className="headline pink-text">111</span>
+          <span className="headline black-text">当前账户地址</span>
         </p>
       </div>
       <div className="header__wallet-user">

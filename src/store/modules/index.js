@@ -1,6 +1,9 @@
 import header from "./header"
 import login from "./login"
-export {
+import lend from "./lend"
+const module = {
     header,
-    login
+    login,
+    lend
 }
+export default module

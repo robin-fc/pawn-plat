@@ -11,11 +11,11 @@
     <div className="content-wrapper main-content mb-l">
       <div class="content">
         <Toggle />
-        <router-view/>
-        <!--  v-if="isLogin"  -->
+        <router-view />
       </div>
     </div>
     <Footer />
+    <LendDialog />
   </div>
 </template>
 
@@ -31,7 +31,8 @@ import MainMenu from "@/components/home/mainMenu.vue";
 import SearchMenu from "@/components/home/searchMenu.vue";
 import DevMenu from "@/components/home/devMenu.vue";
 import Footer from "@/components/home/footer.vue";
-import Toggle from "@/components/public/toggle.vue"; 
+import Toggle from "@/components/public/toggle.vue";
+import LendDialog from "@/components/public/lendDialog.vue";
 import { mapGetters } from "vuex";
 
 export default {
@@ -42,7 +43,8 @@ export default {
     SearchMenu,
     DevMenu,
     Footer,
-    Toggle
+    Toggle,
+    LendDialog,
   },
   computed: {
     ...mapGetters(["isLogin"]),

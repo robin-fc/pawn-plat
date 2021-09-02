@@ -1,11 +1,11 @@
 <template>
-  <div class="menu">
+  <div class="routeMenu">
     <a
       v-for="route of menueRoutes"
       :key="route.path"
       :href="route.path"
-      :className="`menu__item ${
-        $route.name == route.name ? 'menu__item-active' : ''
+      :className="`routeMenu__item ${
+        $route.name == route.name ? 'routeMenu__item-active' : ''
       }`"
     >
       {{ languagePackage[route.name] }}
@@ -31,7 +31,7 @@ const ROUTES = [
   {
     path: "/faq",
     name: "faq",
-  }
+  },
 ];
 
 export default {

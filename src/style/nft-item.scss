@@ -8,7 +8,7 @@
   flex-direction: column;
   background: $white;
   z-index: 1;
-  border: 4px solid $black;
+  // border: 1px solid $black;
   transition: all 250ms;
   top: 0;
   max-height: 38rem;
@@ -16,7 +16,7 @@
 
   &.checked,
   &:hover {
-    box-shadow: 8px 8px 0 $black;
+    box-shadow: 2px 2px 0 $black;
     top: -5px;
   }
 
@@ -211,9 +211,9 @@
     }
 
     &:active {
-      background: $purple;
-      box-shadow: 5px 5px 0 $purple-dark, 4px 4px 0 $purple-dark,
-        3px 3px 0 $purple-dark, 2px 2px 0 $purple-dark, 1px 1px 0 $purple-dark;
+      background: $pink;
+      box-shadow: 5px 5px 0 $pink-dark, 4px 4px 0 $pink-dark,
+        3px 3px 0 $pink-dark, 2px 2px 0 $pink-dark, 1px 1px 0 $pink-dark;
     }
 
     &:before {
@@ -231,7 +231,7 @@
 
   &__button {
     position: relative;
-    background: $green;
+    background: $orange;
     border: none;
     cursor: pointer;
     transition: all 250ms;
@@ -243,9 +243,8 @@
     outline: none;
     transition: all 250ms;
     padding: 10px 12px;
-    box-shadow: 7px 7px 0 $green-dark, 6px 6px 0 $green-dark,
-      5px 5px 0 $green-dark, 4px 4px 0 $green-dark, 3px 3px 0 $green-dark,
-      2px 2px 0 $green-dark, 1px 1px 0 $green-dark;
+    box-shadow: 4px 4px 0 $orange-dark, 3px 3px 0 $orange-dark,
+      2px 2px 0 $orange-dark, 1px 1px 0 $orange-dark;
 
     &.small {
       font-size: 10px;
@@ -268,17 +267,15 @@
     }
 
     &:hover {
-      background: $orange;
-      box-shadow: 7px 7px 0 $orange-dark, 6px 6px 0 $orange-dark,
-        5px 5px 0 $orange-dark, 4px 4px 0 $orange-dark, 3px 3px 0 $orange-dark,
-        2px 2px 0 $orange-dark, 1px 1px 0 $orange-dark;
+      background: $pink;
+      box-shadow: 4px 4px 0 $pink-dark, 3px 3px 0 $pink-dark,
+        2px 2px 0 $pink-dark, 1px 1px 0 $pink-dark;
     }
 
     &:active {
-      background: $purple;
-      box-shadow: 7px 7px 0 $purple-dark, 6px 6px 0 $purple-dark,
-        5px 5px 0 $purple-dark, 4px 4px 0 $purple-dark, 3px 3px 0 $purple-dark,
-        2px 2px 0 $purple-dark, 1px 1px 0 $purple-dark;
+      background: $pink;
+      box-shadow: 4px 4px 0 $pink-dark, 3px 3px 0 $pink-dark,
+        2px 2px 0 $pink-dark, 1px 1px 0 $pink-dark;
     }
 
     &.red {
@@ -299,6 +296,7 @@
       z-index: -1;
       padding: 4px;
       background: black;
+      display: none;
     }
   }
 }
