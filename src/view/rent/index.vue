@@ -32,16 +32,13 @@
           class="
             MuiButtonBase-root
             MuiIconButton-root
-            jss47
-            MuiCheckbox-root
-            jss46
-            MuiCheckbox-colorSecondary
+            MuiCheckbox-root MuiCheckbox-colorSecondary
             MuiIconButton-colorSecondary
           "
           aria-disabled="false"
           ><span class="MuiIconButton-label"
             ><input
-              class="jss50"
+              class="jss"
               type="checkbox"
               data-indeterminate="false"
               value=""
@@ -110,23 +107,36 @@
 </template>
 
 <script>
+import { ethers } from "ethers"; //, providers
+import { abi as PawnPlat } from "@/api/PawnPlat.json";
+// import { ERC721__factory } from "./contracts/ERC721__factory";
+const PP_CONTRACTADDRESS = "0x4A2a34F754A2eEFaa88Ceb6f7262ebE8Cb61d537";
+const ERC721_CONTRACTADDRESS = "0x4A2a34F754A2eEFaa88Ceb6f7262ebE8Cb61d537";
+
 export default {
   name: "rent",
   data() {
     return { nfts: [] };
   },
   async mounted() {
-    //通过合约获取所有正在租赁的rivermen的id,然后异步去opensea拿数据,做展示
-    let nftIds = await this.getIdsByContact();
-    this.getNftInfos(nftIds);
+    this.conectContract();
+    // this.getNftInfos(nftIds);
   },
   methods: {
-    async getIdsByContact() {},
+    //连接租赁合约并返回合约对象
+    async conectContract() {
+      let abi = PawnPlat;
+      let provider = ethers.getDefaultProvider(); // Connect to the network
+      let contract = new ethers.Contract(PP_CONTRACTADDRESS, abi, provider); // 使用Provider 连接合约，将只有对合约的可读权限
+      let nfts = await contract.tokenList(ERC721_CONTRACTADDRESS);
+      console.log(nfts);
+    },
+    //通过合约获取所有正在租赁的rivermen的id
+    async initAllNftsByContact() {},
+    //根据id异步去opensea拿数据,做展示
     async getNftInfos(nftIds) {
       console.log(nftIds);
     },
   },
 };
 </script>
-
-<style lang='scss' scoped></style>

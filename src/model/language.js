@@ -1,7 +1,7 @@
 const DIC_ZH = {
     nftTypePlaceholder: "所有类型",
     nftSortPlaceholder: "排序",
-    rent: "租赁",
+    rent: "市场",
     lend: "出租",
     dashboard: "当前借出",
     faq: "常见问题解答",
@@ -10,7 +10,11 @@ const DIC_ZH = {
     lendToggleTitle: ["可供出租", "正在出租"],
     constractAddress: "合约地址",
     appVersion: "当前版本",
-    toggleInfo: "请连接小狐狸钱包!"
+    toggleInfo: "请连接小狐狸钱包!",
+    cancel: "取消",
+    lendAll: "全部出租",
+    selected: "已选中",
+    items: "个宝贝"
 }
 const DIC_EN = {
     nftTypePlaceholder: "ALL NFTS",
@@ -24,7 +28,11 @@ const DIC_EN = {
     lendToggleTitle: ["AVAILABLE TO LEND", "LENDING"],
     constractAddress: "Contract on etherscan",
     appVersion: "App version",
-    toggleInfo: "Please connect your wallet!"
+    toggleInfo: "Please connect your wallet!",
+    cancel: "Cancel",
+    lendAll: "Lend All",
+    selected: "Selected",
+    items: "Items"
 }
 export {
     DIC_ZH,
