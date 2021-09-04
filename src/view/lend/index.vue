@@ -119,9 +119,12 @@
 
 <script>
 import axios from "axios";
+// import { ethers } from "ethers";
 import dic from "@/model/counten.json";
+// import { abi as ERC721abi } from "@/api/ERC721.json";
+// import { abi as PawnPlatabi } from "@/api/PawnPlat.json";
 import languageMixin from "@/mixins/language";
-import { mapMutations } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   name: "lend",
   mixins: [languageMixin],
@@ -129,7 +132,19 @@ export default {
     return { lendNfts: [], metas: [], selectedToLend: [], old_token_id: "" };
   },
   mounted() {
-    this.getAssetsFromOSByAddress();
+    if (this.accounts[0]) {
+      this.getAssetsFromOSByAddress();
+    }
+  },
+  computed: {
+    ...mapGetters(["accounts"]),
+  },
+  watch: {
+    accounts(val) {
+      if (val[0]) {
+        this.getAssetsFromOSByAddress();
+      }
+    },
   },
   methods: {
     ...mapMutations(["setSelectedNftLend"]),
@@ -139,6 +154,7 @@ export default {
           token_id: nft.token_id,
         },
       ];
+      console.log(this.selectedToLend);
       this.setSelectedNftLend(this.selectedToLend);
     },
     //全部取消
@@ -191,20 +207,25 @@ export default {
     //   }
     // },
     getZHName(enname) {
-      return dic.find((n) => n.en == enname).type || "";
+      let item = dic.find((n) => n.en == enname);
+      if (item) {
+        return item.type;
+      } else {
+        return "";
+      }
     },
     //获取钱包资产
     getAssetsFromOSByAddress() {
       let params = {
-        owner: "0x27aa5a880B512bEaF40D1B2E0F256b09f5711444",
-        asset_contract_address: "0xcfff4c8c0df0e2431977eba7df3d3de857f4b76e",
+        owner: this.accounts[0],
+        asset_contract_address: process.env.VUE_APP__RIVERMEN_ADDRESS,
         order_direction: "desc",
         offset: 0,
         limit: 5,
       };
       axios
         .get("https://api.opensea.io/api/v1/assets", {
-          params: params
+          params: params,
         })
         .then((res) => {
           if (res && res.status == 200) {
@@ -217,6 +238,27 @@ export default {
         .catch((err) => {
           err;
         });
+
+      /** 测试网拿属于我自己的那个22 **/
+      // let provider = {
+      //   current: new ethers.providers.Web3Provider(window.ethereum, "any"),
+      // }; // Connect to the network
+      // let contract = new ethers.Contract(
+      //   process.env.VUE_APP_ERC721_ADDRESS,
+      //   ERC721abi,
+      //   provider
+      // );
+
+      /** 测试网拿属于我自己的那个 **/
+      // let provider = ethers.getDefaultProvider();
+      // let contractAddress = process.env.VUE_APP_ERC721_ADDRESS;
+      // let contract = new ethers.Contract(
+      //   contractAddress,
+      //   ERC721abi,
+      //   provider
+      // );
+      // console.log(this.accounts[0]);
+      // contract.tokenOfOwnerByIndex(this.accounts[0], 0);
     },
   },
 };

@@ -1,6 +1,5 @@
  import {
-   createRouter,
-   createWebHistory
+   createRouter
  } from 'vue-router'
  import Layout from '../layout/index';
  import Rent from '../view/rent';
@@ -13,7 +12,7 @@
  const routes = [{
    path: '/',
    name: 'layout',
-   redirect: '/rent',
+   redirect: '/lend',
    meta: {
      title: 'layout',
      requireAuth: false
@@ -78,7 +77,6 @@
  }]
 
  const router = createRouter({
-   history: createWebHistory(),
    routes: routes
  })
 

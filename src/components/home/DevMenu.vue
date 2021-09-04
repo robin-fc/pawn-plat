@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      v-if="showMint"
+      v-if="false"
       className="content-wrapper mb-l"
       style="flex-wrap: wrap"
     >
@@ -14,7 +14,7 @@
 <script>
 //import MintNfts from '@/layouts/MintNfts'
 //import { mapGetters } from 'vuex'
-const showMint = process.env.NEXT_PUBLIC_SHOW_MINT === "true";
+// const showMint = process.env.NEXT_PUBLIC_SHOW_MINT === "true";
 export default {
   name: "DevMenu",
   //  components: {
@@ -22,7 +22,7 @@ export default {
   //  },
   data() {
     return {
-      showMint: showMint,
+      // showMint: showMint,
     };
   },
   // 计算属性，会监听依赖属性值随之变化

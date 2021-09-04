@@ -6,9 +6,9 @@
 import { useRouter } from "vue-router";
 export default {
   mounted() {
-    let route = useRouter();
+    let router = useRouter();
     setTimeout(() => {
-      route.push("/rent");
+      router.push("/rent");
     }, 3000);
   },
 };

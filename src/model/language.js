@@ -1,4 +1,6 @@
 const DIC_ZH = {
+    connectWallet: "连接钱包",
+    currentAccountAddress: "当前账户地址",
     nftTypePlaceholder: "所有类型",
     nftSortPlaceholder: "排序",
     rent: "市场",
@@ -17,6 +19,8 @@ const DIC_ZH = {
     items: "个宝贝"
 }
 const DIC_EN = {
+    connectWallet: "CONNECT WALLET",
+    currentAccountAddress: "CURRENT ACCOUNT ADDRESS",
     nftTypePlaceholder: "ALL NFTS",
     nftSortPlaceholder: "SORT BY",
     rent: "RENT",

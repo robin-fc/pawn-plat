@@ -54,11 +54,10 @@
 
 <script>
 import { ethers } from "ethers"; //, providers
-// import { abi as PawnPlat } from "@/api/PawnPlat.json";
-import { abi as ERC721 } from "@/api/ERC721.json";
+import { abi as PawnPlatabi } from "@/api/PawnPlat.json";
+import { abi as ERC721abi } from "@/api/ERC721.json";
 import { mapGetters, mapMutations } from "vuex";
-const PP_CONTRACTADDRESS = "0x39671a4ea0D2eacD3d2E573650d90c423BA87Eb4"; //旧的"0x4A2a34F754A2eEFaa88Ceb6f7262ebE8Cb61d537";
-const ERC721_CONTRACTADDRESS = "0x4A2a34F754A2eEFaa88Ceb6f7262ebE8Cb61d537";
+
 export default {
   data() {
     const validateDuration = function (rule, val, callback) {
@@ -100,7 +99,7 @@ export default {
     return {
       isShow: false,
       ruleForm: {
-        address: PP_CONTRACTADDRESS,
+        address: process.env.VUE_APP_ERC721_ADDRESS,
         tokenId: "",
         price: 0,
         duration: 0,
@@ -148,6 +147,7 @@ export default {
     },
   },
   mounted() {
+    console.log(process.env.VUE_APP_ERC721_ADDRESS);
     console.log(this.selectedNftLend[0]);
     if (this.selectedNftLend[0]) {
       this.isShow = true;
@@ -157,10 +157,12 @@ export default {
   },
   methods: {
     ...mapMutations(["setSelectedNftLend"]),
+    //关闭当前对话框
     handleClose() {
       this.$refs["ruleForm"].resetFields();
       this.setSelectedNftLend([]);
     },
+    //表单前端校验
     handleValid() {
       this.$refs["ruleForm"].validate((valid) => {
         if (valid) {
@@ -171,27 +173,45 @@ export default {
         }
       });
     },
+    //ether.js通过rivermen合约向租赁合约授权
     async handleApprove() {
-      //ether.js通过rivermen合约向租赁合约授权
-      //   let abi_pp = PawnPlat;
-      let abi = ERC721;
-      let provider = ethers.getDefaultProvider(); // Connect to the network
-      let contractERC = new ethers.Contract(
-        ERC721_CONTRACTADDRESS,
-        abi,
-        provider
-      ); 
-      // 使用Provider连接合约，将只有对合约的可读权限
-      contractERC.setApprovalForAll(PP_CONTRACTADDRESS, true);
-      return;
-      //   let contractPP = new ethers.Contract(
-      //     PP_CONTRACTADDRESS,
-      //     abi_pp,
-      //     provider
-      //   );
-      //   let nfts = await contractPP.tokenList(ERC721_CONTRACTADDRESS);
-      //   console.log(nfts);
-      //调用租赁合约的lend函数进行租赁
+      let provider = {
+        current: new ethers.providers.Web3Provider(window.ethereum, "any"),
+      };
+      let contractRivermen = new ethers.Contract(
+        process.env.VUE_APP_ERC721_ADDRESS,
+        ERC721abi,
+        provider.current.getSigner()
+      );
+      contractRivermen.setApprovalForAll(
+        process.env.VUE_APP_PAWNPLAT_ADDRESS,
+        true
+      );
+      this.handleLend(provider);
+    },
+    //调用租赁合约的lend函数进行租赁，租赁合约保管挂单
+    async handleLend(provider) {
+      let contractPP = new ethers.Contract(
+        process.env.VUE_APP_PAWNPLAT_ADDRESS,
+        PawnPlatabi,
+        provider.current.getSigner()
+      );
+      let price = ethers.utils
+        .parseEther(this.ruleForm.price.toString())
+        .toHexString();
+      let duration = (this.ruleForm.duration * 24 * 3600).toString();
+      let collateral = ethers.utils
+        .parseEther(this.ruleForm.collateral.toString())
+        .toHexString();
+      console.log(price, duration, collateral, this.ruleForm.token_id);
+      let nfts = await contractPP.lend(
+        process.env.VUE_APP_ERC721_ADDRESS, // 河里人合约地址
+        this.ruleForm.token_id, // 每个河里人对应的tokenID
+        price, // 设置租金/day
+        duration, // 租期 单位为秒
+        collateral // 抵押金 eth
+      );
+      console.log(nfts);
     },
   },
 };

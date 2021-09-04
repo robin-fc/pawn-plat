@@ -8,13 +8,15 @@
       type="button"
       @click="handleConect"
     >
-      连接钱包
+      {{ languagePackage.connectWallet }}
     </button>
     <div v-else className="header__wallet">
       <div className="header__wallet-network">
         <p className="headline black-text"></p>
         <p className="copy-text">
-          <span className="headline black-text">当前账户地址</span>
+          <span className="headline black-text">
+            {{ languagePackage.currentAccountAddress }}</span
+          >
         </p>
       </div>
       <div className="header__wallet-user">
@@ -27,10 +29,10 @@
 <script>
 //import PageHeaderLayout from '@/layouts/PageHeaderLayout'
 import { mapGetters, mapMutations } from "vuex";
+import languageMixin from "@/mixins/language";
+
 export default {
-  data() {
-    return {};
-  },
+  mixins: [languageMixin],
   // 计算属性，会监听依赖属性值随之变化
   computed: {
     ...mapGetters(["accounts", "isLogin"]),

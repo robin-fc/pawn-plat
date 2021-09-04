@@ -110,8 +110,6 @@
 import { ethers } from "ethers"; //, providers
 import { abi as PawnPlat } from "@/api/PawnPlat.json";
 // import { ERC721__factory } from "./contracts/ERC721__factory";
-const PP_CONTRACTADDRESS = "0x4A2a34F754A2eEFaa88Ceb6f7262ebE8Cb61d537";
-const ERC721_CONTRACTADDRESS = "0x4A2a34F754A2eEFaa88Ceb6f7262ebE8Cb61d537";
 
 export default {
   name: "rent",
@@ -127,8 +125,8 @@ export default {
     async conectContract() {
       let abi = PawnPlat;
       let provider = ethers.getDefaultProvider(); // Connect to the network
-      let contract = new ethers.Contract(PP_CONTRACTADDRESS, abi, provider); // 使用Provider 连接合约，将只有对合约的可读权限
-      let nfts = await contract.tokenList(ERC721_CONTRACTADDRESS);
+      let contract = new ethers.Contract(process.env.VUE_APP__PAWNPLAT_ADDRESS, abi, provider); // 使用Provider 连接合约，将只有对合约的可读权限
+      let nfts = await contract.getTokenList(process.env.VUE_APP__ERC721_ADDRESS);
       console.log(nfts);
     },
     //通过合约获取所有正在租赁的rivermen的id

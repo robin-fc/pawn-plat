@@ -33,7 +33,7 @@ export default {
             method: "eth_requestAccounts",
           });
           let chainId = window.ethereum.chainId;
-          if (chainId == "0x1") {
+          if (chainId == process.env.VUE_APP_CHAIN_ID) {
             this.setAccounts(accounts);
           } else {
             this.handleWrongChainId();
@@ -47,7 +47,7 @@ export default {
             console.error(err);
           }
         }
-      } else if (window.ethereum.chainId == "0x1") {
+      } else if (window.ethereum.chainId == process.env.VUE_APP_CHAIN_ID) {
         let accounts = await window.ethereum.request({
           method: "eth_requestAccounts",
         });
@@ -67,14 +67,14 @@ export default {
     async initialize() {
       let vm = this;
       window.ethereum.on("accountsChanged", (accounts) => {
-        if (window.ethereum.chainId != "0x1") {
+        if (window.ethereum.chainId != process.env.VUE_APP_CHAIN_ID) {
           vm.handleWrongChainId();
           return;
         }
         vm.setAccounts(accounts);
       });
       window.ethereum.on("chainChanged", (newChainId) => {
-        if (newChainId !== "0x1") {
+        if (newChainId !== process.env.VUE_APP_CHAIN_ID) {
           vm.handleWrongChainId();
         }
       });
