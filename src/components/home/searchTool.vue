@@ -1,29 +1,25 @@
 <template>
-  <div>
-    <div
-      v-if="false"
-      className="content-wrapper mb-l"
-      style="flex-wrap: wrap"
-    >
-      <!-- <MintNfts />
-      <MintTokens /> -->
-    </div>
+  <div className="menu menu__search">
+    <nftFilter />
+    <nftSort />
+    <LanguageSelect />
   </div>
 </template>
 
 <script>
-//import MintNfts from '@/layouts/MintNfts'
+import NftFilter from "./nftFilter.vue";
+import NftSort from "./nftSort.vue";
+import LanguageSelect from "./languageSelect.vue";
+
 //import { mapGetters } from 'vuex'
-// const showMint = process.env.NEXT_PUBLIC_SHOW_MINT === "true";
 export default {
-  name: "DevMenu",
-  //  components: {
-  //    PageHeaderLayout,
-  //  },
+  components: {
+    NftFilter,
+    NftSort,
+    LanguageSelect,
+  },
   data() {
-    return {
-      // showMint: showMint,
-    };
+    return {};
   },
   // 计算属性，会监听依赖属性值随之变化
   //  computed: {
@@ -42,4 +38,4 @@ export default {
 };
 </script>
 
-<style lang='less' scoped></style>
+<style lang="less" scoped></style>

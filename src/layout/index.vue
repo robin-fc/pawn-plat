@@ -1,20 +1,20 @@
 <template>
   <div class="app-container">
     <div className="content-wrapper mb-l">
-      <MainHeader />
+      <HomeHeader />
     </div>
     <div className="content-wrapper mb-l menu-wrapper">
-      <MainMenu />
-      <SearchMenu />
+      <HomeMenu />
+      <SearchTool />
     </div>
-    <DevMenu />
+    <MainMenu />
     <div className="content-wrapper main-content mb-l">
       <div class="content">
         <Toggle />
         <router-view />
       </div>
     </div>
-    <Footer />
+    <HomeFooter />
     <LendDialog />
   </div>
 </template>
@@ -26,11 +26,11 @@
    更新时间  2021/08/30
    备注
 */
-import MainHeader from "@/components/home/mainHeader.vue";
+import HomeHeader from "@/components/home/homeHeader.vue";
+import HomeMenu from "@/components/home/homeMenu.vue";
+import SearchTool from "@/components/home/searchTool.vue";
 import MainMenu from "@/components/home/mainMenu.vue";
-import SearchMenu from "@/components/home/searchMenu.vue";
-import DevMenu from "@/components/home/devMenu.vue";
-import Footer from "@/components/home/footer.vue";
+import HomeFooter from "@/components/home/homeFooter.vue";
 import Toggle from "@/components/public/toggle.vue";
 import LendDialog from "@/components/public/lendDialog.vue";
 import { mapGetters } from "vuex";
@@ -38,11 +38,11 @@ import { mapGetters } from "vuex";
 export default {
   name: "Layout",
   components: {
-    MainHeader,
+    HomeHeader,
+    HomeMenu,
+    SearchTool,
     MainMenu,
-    SearchMenu,
-    DevMenu,
-    Footer,
+    HomeFooter,
     Toggle,
     LendDialog,
   },

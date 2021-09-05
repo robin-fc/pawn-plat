@@ -1,48 +1,43 @@
 <template>
-  <div class="routeMenu">
-    <a
-      v-for="route of menueRoutes"
-      :key="route.path"
-      :href="route.path"
-      :className="`routeMenu__item ${
-        $route.name == route.name ? 'routeMenu__item-active' : ''
-      }`"
+  <div>
+    <div
+      v-if="false"
+      className="content-wrapper mb-l"
+      style="flex-wrap: wrap"
     >
-      {{ languagePackage[route.name] }}
-    </a>
+      <!-- <MintNfts />
+      <MintTokens /> -->
+    </div>
   </div>
 </template>
 
 <script>
-import languageMixin from "@/mixins/language";
-const ROUTES = [
-  {
-    path: "/",
-    name: "rent",
-  },
-  {
-    path: "/lend",
-    name: "lend",
-  },
-  {
-    path: "/dashboard",
-    name: "dashboard",
-  },
-  {
-    path: "/faq",
-    name: "faq",
-  },
-];
-
+//import MintNfts from '@/layouts/MintNfts'
+//import { mapGetters } from 'vuex'
+// const showMint = process.env.NEXT_PUBLIC_SHOW_MINT === "true";
 export default {
-  mixins: [languageMixin],
+  name: "DevMenu",
+  //  components: {
+  //    PageHeaderLayout,
+  //  },
   data() {
-    return { isActive: false };
+    return {
+      // showMint: showMint,
+    };
   },
-  beforeCreate() {
-    this.menueRoutes = ROUTES.slice();
-  },
+  // 计算属性，会监听依赖属性值随之变化
+  //  computed: {
+  //   ...mapGetters(['userPermissions','buttonType'])
+  // },
+  // 监控data中的数据变化
+  //watch: {},
+  // 生命周期 - 创建完成（可以访问当前this实例）
+  // created() {}
+  // beforeMount() {}, // 生命周期 - 挂载之前
+  // 生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},
+  //beforeDestroy() {}, // 生命周期 - 销毁之前
+  // 方法集合
   methods: {},
 };
 </script>

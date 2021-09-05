@@ -60,7 +60,7 @@ import { mapGetters, mapMutations } from "vuex";
 
 export default {
   data() {
-    const validateDuration = function (rule, val, callback) {
+    const validateDuration = function(rule, val, callback) {
       let reg = /^\d+(\.\d+)?$/;
       if (reg.test(val)) {
         if (val <= 0 || val % 0.5 != 0) {
@@ -72,7 +72,7 @@ export default {
         return callback(new Error("请填写0.5天为间隔,正整数倍的数据"));
       }
     };
-    const validatePrice = function (rule, val, callback) {
+    const validatePrice = function(rule, val, callback) {
       let reg = /^\d+(\.\d+)?$/;
       if (reg.test(val)) {
         if (val <= 0) {
@@ -84,7 +84,7 @@ export default {
         return callback(new Error("请检查拼写"));
       }
     };
-    const validateCollateral = function (rule, val, callback) {
+    const validateCollateral = function(rule, val, callback) {
       let reg = /^\d+(\.\d+)?$/;
       if (reg.test(val)) {
         if (val <= 0) {
@@ -204,17 +204,21 @@ export default {
         .parseEther(this.ruleForm.collateral.toString())
         .toHexString();
       console.log(price, duration, collateral, this.ruleForm.token_id);
-      let nfts = await contractPP.lend(
-        process.env.VUE_APP_ERC721_ADDRESS, // 河里人合约地址
-        this.ruleForm.token_id, // 每个河里人对应的tokenID
-        price, // 设置租金/day
-        duration, // 租期 单位为秒
-        collateral // 抵押金 eth
-      );
-      console.log(nfts);
+      if (this.ruleForm.token_id) {
+        let nfts = await contractPP.lend(
+          process.env.VUE_APP_ERC721_ADDRESS, // 河里人合约地址
+          this.ruleForm.token_id, // 每个河里人对应的tokenID
+          price, // 设置租金/day
+          duration, // 租期 单位为秒
+          collateral // 抵押金 eth
+        );
+        console.log(nfts);
+      } else {
+        console.log(this.ruleForm.tocken_id); //元素信息缺失
+      }
     },
   },
 };
 </script>
 
-<style lang='less' scoped></style>
+<style lang="less" scoped></style>
