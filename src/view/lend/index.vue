@@ -13,16 +13,16 @@
           rel="noreferrer"
           :href="
             'https://rarible.com/token/0xcfff4c8c0df0e2431977eba7df3d3de857f4b76e:' +
-            nft.token_id
+              nft.token_id
           "
-          ><img src="/assets/rarible.png" class="nft__icon" /></a
+          ><img src="/assets/rarible.png" class="nft__icon"/></a
         ><a
           class="nft__link"
           target="_blank"
           rel="noreferrer"
           :href="
             'https://opensea.io/assets/0xcfff4c8c0df0e2431977eba7df3d3de857f4b76e/' +
-            nft.token_id
+              nft.token_id
           "
         >
           <img src="/assets/opensea.png" class="nft__icon" />
@@ -30,12 +30,14 @@
         <div class="spacer"></div>
         <span
           v-if="false"
-          :class="`MuiButtonBase-root
+          :class="
+            `MuiButtonBase-root
             MuiIconButton-root
             MuiCheckbox-root 
             ${nft.checked ? 'Mui-checked ' : ''}
             MuiCheckbox-colorSecondary
-            MuiIconButton-colorSecondary`"
+            MuiIconButton-colorSecondary`
+          "
           aria-disabled="false"
         >
           <!-- @click="handleSelect(nft.token_id)" -->
@@ -80,18 +82,25 @@
         <img :alt="nft.description" :src="nft.image_url" />
       </div>
       <div class="nft__name">{{ `${nft.name}(${getZHName(nft.name)})` }}</div>
-      <div class="nft__meta_row" v-for="(meta, index) of metas" :key="index">
-        <div class="nft__meta_title">{{ meta }}</div>
+      <div class="nft__meta_row">
+        <div class="nft__meta_title">{{ languagePackage.address }}</div>
         <div class="nft__meta_dot"></div>
-        <div class="nft__meta_value">
-          <a :href="nft[meta]" target="_blank" rel="noreferrer">{{
-            nft[meta]
-          }}</a>
-        </div>
+        <!-- <div class="nft__meta_value">
+          <a
+            v-if="meta == 'Address' || meta == '合约地址'"
+            :href="nft.nftAddress"
+            target="_blank"
+            rel="noreferrer"
+            >{{ nft.nftAddress }}</a
+          >
+          <span>
+            {{ getContentRow(nft, meta) }}
+          </span>
+        </div> -->
       </div>
       <div class="nft__control">
         <button class="nft__button" type="button" @click="LentNow(nft)">
-          Lend now
+          {{ languagePackage.lendNow }}
         </button>
       </div>
     </div>
@@ -114,22 +123,33 @@
         </div>
       </div>
     </div>
+    <div
+      class="content__nonfts center"
+      v-if="lendNfts.length == 0 && accounts[0]"
+    >
+      抱歉当前网络下的账户没有请求到可以租出的NFT
+    </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
 // import { ethers } from "ethers";
-import dic from "@/model/counten.json";
 // import { abi as ERC721abi } from "@/api/ERC721.json";
-// import { abi as PawnPlatabi } from "@/api/PawnPlat.json";
+import axios from "axios";
+import dic from "@/model/counten.json";
 import languageMixin from "@/mixins/language";
 import { mapGetters, mapMutations } from "vuex";
+import { contactPP } from "@/api/contact";
+
 export default {
   name: "lend",
   mixins: [languageMixin],
   data() {
-    return { lendNfts: [], metas: [], selectedToLend: [], old_token_id: "" };
+    return {
+      lendNfts: [],
+      selectedToLend: [],
+      old_token_id: "",
+    };
   },
   mounted() {
     if (this.accounts[0]) {
@@ -137,12 +157,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["accounts"]),
+    ...mapGetters(["accounts", "deleteLend"]),
   },
   watch: {
     accounts(val) {
       if (val[0]) {
         this.getAssetsFromOSByAddress();
+      }
+    },
+    deleteLend(val) {
+      let index = this.lendNfts.findIndex((n) => n.token_id == val);
+      if (index > -1) {
+        this.lendNfts.splice(index, 1);
       }
     },
   },
@@ -214,17 +240,40 @@ export default {
         return "";
       }
     },
+    getContentRow(nft, meta) {
+      switch (meta) {
+        case "Address":
+          return `https://cn.etherscan.com/address/${nft.asset_contract.address}`;
+        case "合约地址":
+          return `https://cn.etherscan.com/address/${nft.asset_contract.address}`;
+        case "Token id":
+          return nft.token_id;
+        case "NFT编号":
+          return nft.token_id;
+        case "Standard":
+          return nft.asset_contract.schema_name;
+        case "执行标准":
+          return nft.asset_contract.schema_name;
+        default:
+          break;
+      }
+    },
     //获取钱包资产
-    getAssetsFromOSByAddress() {
+    async getAssetsFromOSByAddress() {
+      //拿合约市场的所有token
+      this.tokenList = await contactPP.getTokenList(
+        process.env.VUE_APP_ERC721_ADDRESS
+      );
+      //从opensea拿此人所有没被租出去的资产，被租的已经查不到了
       let params = {
         owner: this.accounts[0],
-        asset_contract_address: process.env.VUE_APP__RIVERMEN_ADDRESS,
+        // asset_contract_address: process.env.VUE_APP_RIVERMEN_ADDRESS,
         order_direction: "desc",
         offset: 0,
-        limit: 5,
+        limit: 50,
       };
       axios
-        .get("https://api.opensea.io/api/v1/assets", {
+        .get(process.env.VUE_APP_RINKEBY, {
           params: params,
         })
         .then((res) => {
@@ -233,32 +282,13 @@ export default {
               n.checked = false;
               return n;
             });
+            console.log(this.lendNfts);
+            console.log(this.tokenList);
           }
         })
         .catch((err) => {
-          err;
+          console.log(err);
         });
-
-      /** 测试网拿属于我自己的那个22 **/
-      // let provider = {
-      //   current: new ethers.providers.Web3Provider(window.ethereum, "any"),
-      // }; // Connect to the network
-      // let contract = new ethers.Contract(
-      //   process.env.VUE_APP_ERC721_ADDRESS,
-      //   ERC721abi,
-      //   provider
-      // );
-
-      /** 测试网拿属于我自己的那个 **/
-      // let provider = ethers.getDefaultProvider();
-      // let contractAddress = process.env.VUE_APP_ERC721_ADDRESS;
-      // let contract = new ethers.Contract(
-      //   contractAddress,
-      //   ERC721abi,
-      //   provider
-      // );
-      // console.log(this.accounts[0]);
-      // contract.tokenOfOwnerByIndex(this.accounts[0], 0);
     },
   },
 };

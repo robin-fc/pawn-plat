@@ -162,6 +162,11 @@
         justify-content: center;
         overflow: hidden;
     }
+    
+    &__nonfts{
+        flex:1;
+        justify-content: center;
+    }
 }
 
 .header {

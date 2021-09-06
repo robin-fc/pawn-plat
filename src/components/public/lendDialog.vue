@@ -12,10 +12,10 @@
       label-width="180px"
       class="demo-ruleForm"
     >
-      <el-form-item label="河里人合约地址" prop="address">
+      <el-form-item label="合约地址" prop="address">
         {{ ruleForm.address }}
       </el-form-item>
-      <el-form-item label="TokenID" prop="tokenId">
+      <el-form-item label="NFT编号" prop="tokenId">
         {{ ruleForm.tokenId }}
       </el-form-item>
       <el-form-item label="租金（eth/天）" prop="price">
@@ -54,9 +54,9 @@
 
 <script>
 import { ethers } from "ethers"; //, providers
-import { abi as PawnPlatabi } from "@/api/PawnPlat.json";
-import { abi as ERC721abi } from "@/api/ERC721.json";
+import { contactRivermen_signer, contactPP_signer } from "@/api/contact";
 import { mapGetters, mapMutations } from "vuex";
+import { ElMessage } from "element-plus";
 
 export default {
   data() {
@@ -156,7 +156,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setSelectedNftLend"]),
+    ...mapMutations(["setSelectedNftLend","setDeleteLend"]),
     //关闭当前对话框
     handleClose() {
       this.$refs["ruleForm"].resetFields();
@@ -175,27 +175,14 @@ export default {
     },
     //ether.js通过rivermen合约向租赁合约授权
     async handleApprove() {
-      let provider = {
-        current: new ethers.providers.Web3Provider(window.ethereum, "any"),
-      };
-      let contractRivermen = new ethers.Contract(
-        process.env.VUE_APP_ERC721_ADDRESS,
-        ERC721abi,
-        provider.current.getSigner()
-      );
-      contractRivermen.setApprovalForAll(
+      await contactRivermen_signer.setApprovalForAll(
         process.env.VUE_APP_PAWNPLAT_ADDRESS,
         true
       );
-      this.handleLend(provider);
+      this.handleLend();
     },
-    //调用租赁合约的lend函数进行租赁，租赁合约保管挂单
-    async handleLend(provider) {
-      let contractPP = new ethers.Contract(
-        process.env.VUE_APP_PAWNPLAT_ADDRESS,
-        PawnPlatabi,
-        provider.current.getSigner()
-      );
+    //调用租赁合约的lend函数进行出租，租赁合约保管挂单
+    async handleLend() {
       let price = ethers.utils
         .parseEther(this.ruleForm.price.toString())
         .toHexString();
@@ -203,18 +190,23 @@ export default {
       let collateral = ethers.utils
         .parseEther(this.ruleForm.collateral.toString())
         .toHexString();
-      console.log(price, duration, collateral, this.ruleForm.token_id);
-      if (this.ruleForm.token_id) {
-        let nfts = await contractPP.lend(
-          process.env.VUE_APP_ERC721_ADDRESS, // 河里人合约地址
-          this.ruleForm.token_id, // 每个河里人对应的tokenID
-          price, // 设置租金/day
-          duration, // 租期 单位为秒
-          collateral // 抵押金 eth
-        );
-        console.log(nfts);
+      if (this.ruleForm.tokenId) {
+        try {
+          let nfts = await contactPP_signer.lend(
+            process.env.VUE_APP_ERC721_ADDRESS, // 河里人合约地址
+            this.ruleForm.tokenId, // 每个河里人对应的tokenID
+            price, // 设置租金/day
+            duration, // 租期 单位为秒
+            collateral // 抵押金 eth
+          );
+          console.log(nfts,this.ruleForm.tokenId);
+          this.setDeleteLend(this.ruleForm.tokenId.toString());
+          this.handleClose();
+        } catch (error) {
+          ElMessage(error);
+        }
       } else {
-        console.log(this.ruleForm.tocken_id); //元素信息缺失
+        ElMessage("tokenId缺失");
       }
     },
   },

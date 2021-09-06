@@ -20,7 +20,8 @@
         </p>
       </div>
       <div className="header__wallet-user">
-        <a href="/profile">{{ accounts[0] }}</a>
+        <!-- <a href="/profile">{{ accounts[0] }}</a> -->
+        <span>{{ accounts[0] }}</span>
       </div>
     </div>
   </div>
@@ -46,4 +47,4 @@ export default {
 };
 </script>
 
-<style lang='scss' scoped></style>
+<style lang="scss" scoped></style>

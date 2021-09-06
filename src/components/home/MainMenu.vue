@@ -1,12 +1,9 @@
 <template>
   <div>
-    <div
-      v-if="false"
-      className="content-wrapper mb-l"
-      style="flex-wrap: wrap"
-    >
+    <div v-if="false" className="content-wrapper mb-l" style="flex-wrap: wrap">
       <!-- <MintNfts />
       <MintTokens /> -->
+      <router-view />
     </div>
   </div>
 </template>
@@ -42,4 +39,4 @@ export default {
 };
 </script>
 
-<style lang='less' scoped></style>
+<style lang="less" scoped></style>

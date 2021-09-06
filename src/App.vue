@@ -1,16 +1,20 @@
 <template>
   <div id="app">
-    <router-view />
+    <Layout />
   </div>
 </template>
 
 <script>
 import { ElMessage } from "element-plus";
 import { mapGetters, mapMutations } from "vuex";
+import Layout from "@/layout";
 import languageMixin from "@/mixins/language";
 export default {
   name: "App",
   mixins: [languageMixin],
+  components: {
+    Layout,
+  },
   computed: {
     ...mapGetters(["chainId", "reconnect"]),
   },

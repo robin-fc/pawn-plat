@@ -1,15 +1,15 @@
 <template>
   <div class="routeMenu">
-    <a
+    <router-link
       v-for="route of menueRoutes"
       :key="route.path"
-      :href="route.path"
+      :to="route.path"
       :className="`routeMenu__item ${
         $route.name == route.name ? 'routeMenu__item-active' : ''
       }`"
     >
       {{ languagePackage[route.name] }}
-    </a>
+    </router-link>
   </div>
 </template>
 
@@ -17,7 +17,7 @@
 import languageMixin from "@/mixins/language";
 const ROUTES = [
   {
-    path: "/",
+    path: "/rent",
     name: "rent",
   },
   {
