@@ -1,21 +1,24 @@
 <template>
   <div className="menu menu__search">
-    <nftFilter />
-    <nftSort />
+    <!-- <nftFilter />
+    <nftSort /> -->
+    <NftSearch />
     <LanguageSelect />
   </div>
 </template>
 
 <script>
-import NftFilter from "./nftFilter.vue";
-import NftSort from "./nftSort.vue";
+// import NftFilter from "./nftFilter.vue";
+// import NftSort from "./nftSort.vue";
+import NftSearch from "./nftSearch.vue";
 import LanguageSelect from "./languageSelect.vue";
 
 //import { mapGetters } from 'vuex'
 export default {
   components: {
-    NftFilter,
-    NftSort,
+    // NftFilter,
+    // NftSort,
+    NftSearch,
     LanguageSelect,
   },
   data() {

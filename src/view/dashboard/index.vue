@@ -116,21 +116,30 @@
           >
             {{ languagePackage.repay }}
           </button>
-          <button
-            v-else-if="nft.isInPool"
-            class="nft__button"
-            type="button"
-            @click="handleWithdraw(nft)"
-          >
-            {{ languagePackage.inPoolWithdrw }}
-          </button>
+          <div v-else-if="nft.isInPool">
+            <button
+              style="margin-right:10px"
+              class="nft__button"
+              type="button"
+              @click="handleWithdraw(nft)"
+            >
+              {{ languagePackage.inPoolWithdrw }}
+            </button>
+            <button
+              class="nft__button"
+              type="button"
+              @click="handleUpdate(nft)"
+            >
+              {{ languagePackage.inPoolUpdate }}
+            </button>
+          </div>
           <button
             v-else-if="!nft.isInPool"
             class="nft__button"
             type="button"
-            @click="handleUpdate(nft)"
+            @click="handleClaim(nft)"
           >
-            {{ languagePackage.inPoolUpdate }}
+            {{ languagePackage.claim }}
           </button>
         </div>
       </div>
@@ -151,8 +160,10 @@
 
 import dic from "@/model/counten.json";
 import { contactPP } from "@/api/contact.js";
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import languageMixin from "@/mixins/language";
+import { contactPP_signer } from "../../api/contact";
+import { ElMessage } from "element-plus";
 
 export default {
   name: "dashboard",
@@ -182,14 +193,16 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["accounts", "repaidNFT", "dashboardToggleValue"]),
+    ...mapGetters([
+      "accounts",
+      "repaidNFT",
+      "dashboardToggleValue",
+      "keywords",
+    ]),
   },
   watch: {
     repaidNFT(val) {
-      let index = this.myListNfts.findIndex((n) => n.token_id == val);
-      if (index > -1) {
-        this.myListNfts.splice(index, 1);
-      }
+      this.deleteNFT(val);
     },
     accounts(val) {
       if (val && val[0]) {
@@ -200,6 +213,7 @@ export default {
       if (val == 0) {
         this.myListNfts = this.myListNftsRend.slice();
       } else {
+        this.myListNfts = [];
         this.getLended();
       }
     },
@@ -210,6 +224,25 @@ export default {
         this.myListNfts = this.myListNftsRend.slice();
       }
     },
+    keywords(val) {
+      if (!val) {
+        if (this.dashboardToggleValue == 0) {
+          this.myListNfts = this.myListNftsRend.slice();
+        } else {
+          this.myListNfts = this.myListNftsLent.slice();
+        }
+      } else {
+        if (this.dashboardToggleValue == 0) {
+          this.myListNfts = this.myListNftsRend.filter(
+            (r) => r.token_id == val || r.name.indexOf(val) > -1
+          );
+        } else {
+          this.myListNfts = this.myListNftsLent.filter(
+            (r) => r.token_id == val || r.name.indexOf(val) > -1
+          );
+        }
+      }
+    },
   },
   beforeMount() {
     if (this.accounts && this.accounts[0]) {
@@ -217,6 +250,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(["setSelectedNftRepay", "setSelectedNftLendToEdit"]),
     //获取账户租入的nfts
     async getRented() {
       this.loading = true;
@@ -238,7 +272,8 @@ export default {
         arrIsInPool.forEach((value, index) => {
           value ? "" : idsFromContact.push(nftsIdList[index]);
         });
-        let url = `${process.env.VUE_APP_RINKEBY}?owner=${this.accounts[0]}&order_direction=desc&offset=0`; //&collection=rivermen
+        // owner=${this.accounts[0]}&
+        let url = `${process.env.VUE_APP_RINKEBY}?asset_contract_address=${process.env.VUE_APP_ERC721_ADDRESS}&order_direction=desc&offset=0`; //&collection=rivermen
         //用户地址opensea的，包含他租了的
         let idsFromOpensea = [];
         fetch(url, { method: "GET" })
@@ -342,6 +377,7 @@ export default {
           process.env.VUE_APP_ERC721_ADDRESS, // 河里人合约地址
           n.token_id
         );
+        n.startAt = lendingValue.startAt.toString();
         n.dailyRentPrice = parseInt(lendingValue.price.toString()) / 1e18;
         n.duration = parseFloat(lendingValue.duration.toString()) / (3600 * 24);
         n.collateral = parseInt(lendingValue.collateral.toString()) / 1e18;
@@ -368,15 +404,69 @@ export default {
       this.selectedToRent[0].collateral = dom3 ? dom3.innerHTML : 0;
 
       console.log(this.selectedToRent);
-      this.setSelectedNftRent(this.selectedToRent);
+      this.setSelectedNftLendToEdit(this.selectedToRent[0]);
     },
     //撤销nft租赁信息
     async handleWithdraw(nft) {
-      nft;
+      this.$confirm("此操作撤回当前选中的nft, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let res = await contactPP_signer.withdrawToken(
+            process.env.VUE_APP_ERC721_ADDRESS,
+            nft.token_id
+          );
+          console.log(res);
+          this.deleteNFT(nft.token_id);
+          ElMessage({
+            type: "success",
+            message: "撤销成功!",
+          });
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    deleteNFT(id) {
+      let index = this.myListNfts.findIndex((n) => n.token_id == id);
+      if (index > -1) {
+        this.myListNfts.splice(index, 1);
+      }
     },
     //申请nft超时补偿
+    async handleClaim(nft) {
+      this.$confirm("此操作认领超时补偿金, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(async () => {
+          let repayResult = await contactPP_signer.claim(
+            process.env.VUE_APP_ERC721_ADDRESS, // 河里人合约地址
+            nft.token_id // 每个河里人对应的tokenID
+          );
+          console.log(repayResult);
+          this.deleteNFT(nft.token_id);
+          ElMessage({
+            type: "success",
+            message: "撤销成功!",
+          });
+        })
+        .catch(() => {
+          ElMessage({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    //主动归还
     async handleRepay(nft) {
-      nft;
+      this.setSelectedNftRepay([nft]);
     },
     getZHName(enname) {
       let item = dic.find((n) => n.en == enname);

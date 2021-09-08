@@ -41,6 +41,7 @@ const DIC_ZH = {
   claim: "超时认领补偿",
   rented: "主动归还",
   landed: "正在出租",
+  searchHolder: "请输入tokenId或者关键词进行模糊匹配",
 };
 const DIC_EN = {
   connectWallet: "CONNECT WALLET",
@@ -86,5 +87,6 @@ const DIC_EN = {
   claim: "Claim",
   rented: "repay",
   landed: "landed",
+  searchHolder: "please input tokenId or name to search",
 };
 export { DIC_ZH, DIC_EN };

@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="出租信息修改"
+    title="出租信息维护"
     v-model="isShow"
     width="30%"
     :before-close="handleClose"
@@ -41,9 +41,9 @@
       </el-form-item>
       <el-form-item>
         <div class="modal-dialog-button">
-          <div class="nft__control"> 
-            <button class="nft__button" type="button" @click="handleClaim">
-              {{ languagePackage.claim }}
+          <div class="nft__control">
+            <button class="nft__button" type="button" @click="handleUpdateLend">
+              {{ languagePackage.inPoolUpdate }}
             </button>
           </div>
         </div>
@@ -57,11 +57,14 @@ import { ethers } from "ethers"; //, providers
 import { contactRivermen_signer, contactPP_signer } from "@/api/contact";
 import { mapGetters, mapMutations } from "vuex";
 import { ElMessage } from "element-plus";
+import languageMixin from "@/mixins/language";
+
 /**
  * 出租后的撤销、更新、claim功能
  */
 export default {
   name: "lendEditDialog",
+  mixins: [languageMixin],
   data() {
     const validateDuration = function(rule, val, callback) {
       let reg = /^\d+(\.\d+)?$/;
@@ -140,26 +143,29 @@ export default {
   },
   watch: {
     selectedNftLendToEdit(val) {
-      if (val[0]) {
-        this.ruleForm.tokenId = val[0].token_id;
-        this.isShow = true;
-      } else {
-        this.ruleForm.tokenId = "";
-        this.isShow = false;
-      }
+      this.dealNftChange(val);
     },
   },
   mounted() {
-    console.log(process.env.VUE_APP_ERC721_ADDRESS);
-    console.log(this.selectedNftLendToEdit[0]);
-    if (this.selectedNftLendToEdit[0]) {
-      this.isShow = true;
-    } else {
-      this.isShow = false;
-    }
+    this.dealNftChange(this.selectedNftLendToEdit);
   },
   methods: {
     ...mapMutations(["setSelectedNftLendToEdit"]),
+    dealNftChange(nft) {
+      if (nft && nft.token_id) {
+        this.ruleForm.tokenId = nft.token_id;
+        this.ruleForm.price = parseFloat(nft.dailyRentPrice);
+        this.ruleForm.duration = parseFloat(nft.duration);
+        this.ruleForm.collateral = parseFloat(nft.collateral);
+        this.isShow = true;
+      } else {
+        this.ruleForm.tokenId = "";
+        this.ruleForm.price = 0;
+        this.ruleForm.duration = 0;
+        this.ruleForm.collateral = 0;
+        this.isShow = false;
+      }
+    },
     //关闭当前对话框
     handleClose() {
       this.$refs["ruleForm"].resetFields();
@@ -212,8 +218,6 @@ export default {
         ElMessage("tokenId缺失");
       }
     },
-    handleWithdraw() {},
-    handleClaim() {},
   },
 };
 </script>

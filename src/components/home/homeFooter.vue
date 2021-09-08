@@ -1,15 +1,15 @@
 <template>
   <div class="content-wrapper footer">
     <div class="footer__message font-VT323">
-      <span class="notion"> {{ languagePackage.notion }}</span>
-      <a
+      <!-- <span class="notion"> {{ languagePackage.notion }}</span> -->
+      <!-- <a
         class="footer_address"
         href="https://etherscan.io/address/0x94d8f036a0fbc216bb532d33bdf6564157af0cd7"
         target="_blank"
         rel="noreferrer"
         >{{ languagePackage.contractAddress }}:
         0x36dd70C17a5147A364Fa2fAE6820c2F8df6a97C9
-      </a>
+      </a> -->
     </div>
     <div class="soc">
       <a href="https://discord.gg/5Gjs7zKq45" target="_blank" rel="noreferrer">

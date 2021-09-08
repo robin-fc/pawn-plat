@@ -101,9 +101,7 @@
               rel="noreferrer"
             >
             </a>
-            <span
-              v-else
-              :id="nft.token_id + '-' + key"
+            <span v-else :id="nft.token_id + '-' + key"
               >{{ getContentRow(nft, meta, key) }}
             </span>
           </div>
@@ -183,13 +181,27 @@ export default {
     this.conectContract();
   },
   computed: {
-    ...mapGetters(["rentedNFT", "accounts"]),
+    ...mapGetters(["rentedNFT", "accounts", "keywords"]),
   },
   watch: {
     rentedNfts(val) {
       let index = this.rentNfts.findIndex((n) => n.token_id == val); //将市场中被租走的标记一下
       if (index > -1) {
         this.rentNfts[index].isInPool = false;
+      }
+    },
+    keywords(val) {
+      if (!val) {
+        this.rentNfts = this.rentNftsCache.slice(
+          this.pageSize * (this.currentPage - 1),
+          this.pageSize * this.currentPage
+        );
+      } else {
+        this.rentNfts = this.rentNftsCache.filter(
+          (r) => r.token_id == val || r.name.indexOf(val) > -1
+        );
+        this.currentPage = 1;
+        this.pageSize = 20;
       }
     },
   },
