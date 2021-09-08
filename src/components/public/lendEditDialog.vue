@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="确认出租信息"
+    title="出租信息修改"
     v-model="isShow"
     width="30%"
     :before-close="handleClose"
@@ -41,9 +41,9 @@
       </el-form-item>
       <el-form-item>
         <div class="modal-dialog-button">
-          <div class="nft__control">
-            <button class="nft__button" type="button" @click="handleValid">
-              确认授权
+          <div class="nft__control"> 
+            <button class="nft__button" type="button" @click="handleClaim">
+              {{ languagePackage.claim }}
             </button>
           </div>
         </div>
@@ -57,8 +57,11 @@ import { ethers } from "ethers"; //, providers
 import { contactRivermen_signer, contactPP_signer } from "@/api/contact";
 import { mapGetters, mapMutations } from "vuex";
 import { ElMessage } from "element-plus";
-
+/**
+ * 出租后的撤销、更新、claim功能
+ */
 export default {
+  name: "lendEditDialog",
   data() {
     const validateDuration = function(rule, val, callback) {
       let reg = /^\d+(\.\d+)?$/;
@@ -133,10 +136,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["selectedNftLend"]),
+    ...mapGetters(["selectedNftLendToEdit"]),
   },
   watch: {
-    selectedNftLend(val) {
+    selectedNftLendToEdit(val) {
       if (val[0]) {
         this.ruleForm.tokenId = val[0].token_id;
         this.isShow = true;
@@ -148,19 +151,19 @@ export default {
   },
   mounted() {
     console.log(process.env.VUE_APP_ERC721_ADDRESS);
-    console.log(this.selectedNftLend[0]);
-    if (this.selectedNftLend[0]) {
+    console.log(this.selectedNftLendToEdit[0]);
+    if (this.selectedNftLendToEdit[0]) {
       this.isShow = true;
     } else {
       this.isShow = false;
     }
   },
   methods: {
-    ...mapMutations(["setSelectedNftLend","setDeleteLend"]),
+    ...mapMutations(["setSelectedNftLendToEdit"]),
     //关闭当前对话框
     handleClose() {
       this.$refs["ruleForm"].resetFields();
-      this.setSelectedNftLend([]);
+      this.setSelectedNftLendToEdit([]);
     },
     //表单前端校验
     handleValid() {
@@ -179,10 +182,10 @@ export default {
         process.env.VUE_APP_PAWNPLAT_ADDRESS,
         true
       );
-      this.handleLend();
+      this.handleUpdateLend();
     },
-    //调用租赁合约的lend函数进行出租，租赁合约保管挂单
-    async handleLend() {
+    //调用租赁合约的lend函数更新挂单信息
+    async handleUpdateLend() {
       let price = ethers.utils
         .parseEther(this.ruleForm.price.toString())
         .toHexString();
@@ -199,8 +202,8 @@ export default {
             duration, // 租期 单位为秒
             collateral // 抵押金 eth
           );
-          console.log(nfts,this.ruleForm.tokenId);
-          this.setDeleteLend(this.ruleForm.tokenId.toString());
+          console.log(nfts, this.ruleForm.tokenId);
+          this.setLendUpdated(this.ruleForm.tokenId.toString());
           this.handleClose();
         } catch (error) {
           ElMessage(error);
@@ -209,6 +212,8 @@ export default {
         ElMessage("tokenId缺失");
       }
     },
+    handleWithdraw() {},
+    handleClaim() {},
   },
 };
 </script>

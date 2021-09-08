@@ -17,6 +17,8 @@
     <HomeFooter />
     <LendDialog />
     <RentDialog />
+    <RentRepayDialog />
+    <LendEditDialog />
   </div>
 </template>
 
@@ -34,7 +36,9 @@ import MainMenu from "@/components/home/mainMenu.vue";
 import HomeFooter from "@/components/home/homeFooter.vue";
 import Toggle from "@/components/public/toggle.vue";
 import LendDialog from "@/components/public/lendDialog.vue";
+import LendEditDialog from "@/components/public/lendEditDialog.vue";
 import RentDialog from "@/components/public/rentDialog.vue";
+import RentRepayDialog from "@/components/public/rentRepayDialog.vue";
 import { mapGetters } from "vuex";
 
 export default {
@@ -47,7 +51,9 @@ export default {
     HomeFooter,
     Toggle,
     LendDialog,
+    LendEditDialog,
     RentDialog,
+    RentRepayDialog
   },
   computed: {
     ...mapGetters(["isLogin"]),

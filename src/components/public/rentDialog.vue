@@ -48,7 +48,7 @@
 
 <script>
 import { ethers } from "ethers";
-import { contactPP_signer, contactRivermen_signer } from "@/api/contact.js";
+import { contactPP_signer } from "@/api/contact.js";
 import { mapGetters, mapMutations } from "vuex";
 import { ElMessage } from "element-plus";
 import languageMixin from "@/mixins/language";
@@ -99,7 +99,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setSelectedNftRent","setRentedNFT"]),
+    ...mapMutations(["setSelectedNftRent", "setRentedNFT"]),
     handleCountTotal() {
       this.ruleForm.totalRentPrice =
         this.ruleForm.dailyRentPrice * this.ruleForm.duration +
@@ -119,7 +119,7 @@ export default {
     handleValid() {
       this.$refs["ruleForm"].validate((valid) => {
         if (valid) {
-          this.handleApprove();
+          this.handleRent();
         } else {
           console.log("error submit!!");
           return false;
@@ -127,13 +127,13 @@ export default {
       });
     },
     //ether.js通过rivermen合约向租赁合约授权
-    async handleApprove() {
-      await contactRivermen_signer.setApprovalForAll(
-        process.env.VUE_APP_PAWNPLAT_ADDRESS,
-        true
-      );
-      this.handleRent();
-    },
+    // async handleApprove() {
+    //   await contactRivermen_signer.setApprovalForAll(
+    //     process.env.VUE_APP_PAWNPLAT_ADDRESS,
+    //     true
+    //   );
+    //   this.handleRent();
+    // },
     //调用租赁合约的rent函数进行租赁，租赁合约签单
     async handleRent() {
       let totalRentPrice = this.handleCountTotal();

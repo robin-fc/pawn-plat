@@ -1,5 +1,10 @@
 <template>
-  <div>
+  <div
+    v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(255, 255, 255, 0.8)"
+  >
     <div class="content__row content__items">
       <div
         v-for="(nft, index) of rentNfts"
@@ -96,7 +101,9 @@
               rel="noreferrer"
             >
             </a>
-            <span v-else :id="nft.token_id + '-' + key"
+            <span
+              v-else
+              :id="nft.token_id + '-' + key"
               >{{ getContentRow(nft, meta, key) }}
             </span>
           </div>
@@ -125,6 +132,12 @@
       :total="total"
     >
     </el-pagination>
+    <div
+      class="content__nonfts center"
+      v-if="rentNfts.length == 0 && accounts && accounts[0]"
+    >
+      抱歉当前网络下的账户没有请求到可以租出的NFT
+    </div>
   </div>
 </template>
 
@@ -144,6 +157,7 @@ export default {
         this.language == "zh"
           ? [
               "合约地址",
+              "拥有者",
               "NFT编号",
               "执行标准",
               "租金（eth/天）",
@@ -152,6 +166,7 @@ export default {
             ]
           : [
               "Address",
+              "Owner",
               "Token id",
               "Standard",
               "Daily price[per day][eth]",
@@ -161,17 +176,18 @@ export default {
       total: 0,
       currentPage: 1,
       pageSize: 20,
+      loading: false,
     };
   },
   beforeMount() {
     this.conectContract();
   },
   computed: {
-    ...mapGetters(["rentedNFT"]),
+    ...mapGetters(["rentedNFT", "accounts"]),
   },
   watch: {
     rentedNfts(val) {
-      let index = this.rentNfts.findIndex((n) => n.token_id == val);
+      let index = this.rentNfts.findIndex((n) => n.token_id == val); //将市场中被租走的标记一下
       if (index > -1) {
         this.rentNfts[index].isInPool = false;
       }
@@ -199,7 +215,7 @@ export default {
     //连接租赁合约并返回合约对象
     async conectContract() {
       this.initPagination();
-
+      this.loading = true;
       try {
         let tokenList = await contactPP.getTokenList(
           process.env.VUE_APP_ERC721_ADDRESS
@@ -215,6 +231,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
+      this.loading = false;
     },
     //根据id异步去opensea拿数据,做展示
     async getNtfInfo(tIds) {
@@ -258,6 +275,7 @@ export default {
                 process.env.VUE_APP_ERC721_ADDRESS, // 河里人合约地址
                 n.token_id
               );
+              n.owner = lendingValue.owner;
               n.dailyRentPrice = parseInt(lendingValue.price.toString()) / 1e18;
               n.duration =
                 parseFloat(lendingValue.duration.toString()) / (3600 * 24);
@@ -279,9 +297,9 @@ export default {
         },
       ];
       //拿所有出租数据，避免又去请求
-      let dom1 = document.getElementById(`${nft.token_id}-3`);
-      let dom2 = document.getElementById(`${nft.token_id}-4`);
-      let dom3 = document.getElementById(`${nft.token_id}-5`);
+      let dom1 = document.getElementById(`${nft.token_id}-4`);
+      let dom2 = document.getElementById(`${nft.token_id}-5`);
+      let dom3 = document.getElementById(`${nft.token_id}-6`);
       this.selectedToRent[0].dailyRentPrice = dom1 ? dom1.innerHTML : 0;
       this.selectedToRent[0].duration = dom2 ? dom2.innerHTML : 0;
       this.selectedToRent[0].collateral = dom3 ? dom3.innerHTML : 0;
@@ -307,6 +325,12 @@ export default {
             break;
           case "合约地址":
             value = `https://cn.etherscan.com/address/${nft.asset_contract.address}`;
+            break;
+          case "拥有者":
+            value = nft.owner;
+            break;
+          case "Owner":
+            value = nft.owner;
             break;
           case "Token id":
             value = nft.token_id;

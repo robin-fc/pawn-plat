@@ -41,9 +41,7 @@ export default {
   },
   beforeCreate() {
     this.menueRoutes = ROUTES.slice();
-  },
-  mounted() {},
-  methods: {},
+  }
 };
 </script>
 

@@ -20,7 +20,6 @@
         </p>
       </div>
       <div className="header__wallet-user">
-        <!-- <a href="/profile">{{ accounts[0] }}</a> -->
         <span>{{ accounts[0] }}</span>
       </div>
     </div>

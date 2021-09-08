@@ -1,6 +1,6 @@
 <template>
   <div className="content__row content__navigation">
-    <div v-if="isShowSwitch" className="switch">
+    <div v-show="isShowSwitch" className="switch">
       <div className="switch__title">
         {{ switchTitle }}
       </div>
@@ -19,62 +19,45 @@
 </template>
 
 <script>
-//import PageHeaderLayout from '@/layouts/PageHeaderLayout'
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 import languageMixin from "@/mixins/language";
 
 export default {
-  //  components: {
-  //    PageHeaderLayout,
-  //  },
   name: "toggle",
   mixins: [languageMixin],
   data() {
     return {
       toggleValue: 0,
-      switchTitle: "",
-      isShowSwitch: true,
+      switchTitle: "已经租入",
+      isShowSwitch: false,
     };
   },
   watch: {
-    language() {
-      this.initSwitchTitle();
+    toggleValue(val) {
+      this.setToggleValue(val);
+    },
+    "$route.name"(val) {
+      this.isShowSwitch = val == "dashboard";
+      this.toggleValue = 0;
+      this.switchTitle = this.languagePackage.dashToggleTitle[this.toggleValue];
     },
   },
   computed: {
     ...mapGetters(["isLogin"]),
   },
-  mounted() {
-    this.initSwitchTitle();
-  },
   methods: {
-    initSwitchTitle() {
-      switch (this.$route.name) {
-        case "rent":
-          this.isShowSwitch = true;
-          this.switchTitle =
-            this.languagePackage.rentToggleTitle[this.toggleValue];
-          break;
-        case "lend":
-          this.isShowSwitch = true;
-          this.switchTitle =
-            this.languagePackage.lendToggleTitle[this.toggleValue];
-          break;
-        default:
-          this.isShowSwitch = false;
-          break;
-      }
-    },
+    ...mapMutations(["setToggleValue"]),
     onSwitch() {
       if (this.toggleValue === 0) {
         this.toggleValue = 1;
+        this.switchTitle = this.languagePackage.dashToggleTitle[1];
       } else {
         this.toggleValue = 0;
+        this.switchTitle = this.languagePackage.dashToggleTitle[0];
       }
-      this.initSwitchTitle();
     },
   },
 };
 </script>
 
-<style lang='less' scoped></style>
+<style lang="less" scoped></style>

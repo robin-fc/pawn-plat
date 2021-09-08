@@ -3,8 +3,7 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import Rent from "../view/rent";
 import Lend from "../view/lend";
 import dashboard from "../view/dashboard";
-import faq from "../view/faq";
-import profile from "../view/profile";
+import faq from "../view/faq"; 
 import notFound from "../view/notFound";
 
 const routes = [
@@ -53,15 +52,6 @@ const routes = [
       activeMenu: 4,
     },
     component: faq,
-  },
-  {
-    path: "/profile",
-    name: "profile",
-    meta: {
-      title: "profile",
-      activeMenu: 4,
-    },
-    component: profile,
   },
   {
     path: "/404",

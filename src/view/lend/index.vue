@@ -1,5 +1,11 @@
 <template>
-  <div class="content__row content__items">
+  <div
+    class="content__row content__items"
+    v-loading="loading"
+    element-loading-text="拼命加载中"
+    element-loading-spinner="el-icon-loading"
+    element-loading-background="rgba(255, 255, 255, 0.8)"
+  >
     <div
       v-for="(nft, index) of lendNfts"
       :key="index"
@@ -125,7 +131,7 @@
     </div>
     <div
       class="content__nonfts center"
-      v-if="lendNfts.length == 0 && accounts[0]"
+      v-if="lendNfts.length == 0 && accounts&&accounts[0]"
     >
       抱歉当前网络下的账户没有请求到可以租出的NFT
     </div>
@@ -149,6 +155,7 @@ export default {
       lendNfts: [],
       selectedToLend: [],
       old_token_id: "",
+      loading: false,
     };
   },
   mounted() {
@@ -260,6 +267,7 @@ export default {
     },
     //获取钱包资产
     async getAssetsFromOSByAddress() {
+      this.loading = true;
       //拿合约市场的所有token
       this.tokenList = await contactPP.getTokenList(
         process.env.VUE_APP_ERC721_ADDRESS
@@ -289,6 +297,7 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+      this.loading = false;
     },
   },
 };
