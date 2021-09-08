@@ -18,7 +18,7 @@ const DIC_ZH = {
   lendAll: "全部出租",
   selected: "已选中",
   items: "个宝贝",
-  address: "河里人合约地址",
+  address: "合约地址",
   tokenId: "NFT编号",
   dailyRentPrice: "每天的租金",
   duration: "最长租期 (天)",
@@ -42,6 +42,12 @@ const DIC_ZH = {
   rented: "主动归还",
   landed: "正在出租",
   searchHolder: "请输入tokenId或者关键词进行模糊匹配",
+  lendEdit: "出租信息更新",
+  lendDialogTitle: "确认出租信息",
+  repayDialogTitle: "即将归还",
+  outOfTime: "超时，无法归还",
+  confirmLend: "确认授权平台挂单",
+  confirmRent: "确认租借信息",
 };
 const DIC_EN = {
   connectWallet: "CONNECT WALLET",
@@ -79,7 +85,7 @@ const DIC_EN = {
   ],
   rentNow: "Rent now",
   lendNow: "Lend now",
-  approvePaymentTokens: "Approve Payment tokens",
+  approvePaymentTokens: "Approve Rent",
   totalRentPrice: "Total RentPrice",
   repay: "Repay",
   inPoolUpdate: "Update",
@@ -88,5 +94,11 @@ const DIC_EN = {
   rented: "repay",
   landed: "landed",
   searchHolder: "please input tokenId or name to search",
+  lendEdit: "Edit Rent Info",
+  lendDialogTitle: "Submit Rent Info",
+  repayDialogTitle: "Repay",
+  outOfTime: "Out of Time!",
+  confirmLend: "Lend Now",
+  confirmRent: "Approve & Confirm",
 };
 export { DIC_ZH, DIC_EN };

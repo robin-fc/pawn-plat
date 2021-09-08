@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="即将归还"
+    :title="languagePackage.repayDialogTitle"
     v-model="isShow"
     width="30%"
     :before-close="handleClose"
@@ -18,7 +18,7 @@
           type="button"
           @click="handleApprove"
         >
-          {{ exceedDutation ? "超时" : languagePackage.repay }}
+          {{ exceedDutation ? languagePackage.outOfTime : languagePackage.repay }}
         </button>
       </div>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="确认出租信息"
+    :title="languagePackage.lendDialogTitle"
     v-model="isShow"
     width="30%"
     :before-close="handleClose"
@@ -12,27 +12,27 @@
       label-width="180px"
       class="demo-ruleForm"
     >
-      <el-form-item label="合约地址" prop="address">
+      <el-form-item :label="languagePackage.address" prop="address">
         {{ ruleForm.address }}
       </el-form-item>
-      <el-form-item label="NFT编号" prop="tokenId">
+      <el-form-item :label="languagePackage.tokenId" prop="tokenId">
         {{ ruleForm.tokenId }}
       </el-form-item>
-      <el-form-item label="租金（eth/天）" prop="price">
+      <el-form-item :label="languagePackage.dailyRentPrice" prop="price">
         <el-input-number
           v-model="ruleForm.price"
           :precision="2"
           :step="0.01"
         ></el-input-number>
       </el-form-item>
-      <el-form-item label="租期 (天)" prop="duration">
+      <el-form-item :label="languagePackage.duration" prop="duration">
         <el-input-number
           v-model="ruleForm.duration"
           :precision="1"
           :step="0.5"
         ></el-input-number>
       </el-form-item>
-      <el-form-item label="缴纳抵押金（eth）" prop="collateral">
+      <el-form-item :label="languagePackage.collateral" prop="collateral">
         <el-input-number
           v-model="ruleForm.collateral"
           :precision="2"
@@ -43,7 +43,7 @@
         <div class="modal-dialog-button">
           <div class="nft__control">
             <button class="nft__button" type="button" @click="handleValid">
-              确认授权
+              {{ languagePackage.confirmLend }}
             </button>
           </div>
         </div>
@@ -57,8 +57,11 @@ import { ethers } from "ethers"; //, providers
 import { contactRivermen_signer, contactPP_signer } from "@/api/contact";
 import { mapGetters, mapMutations } from "vuex";
 import { ElMessage } from "element-plus";
+import languageMixin from "@/mixins/language";
 
 export default {
+  name: "lendDialog",
+  mixins: [languageMixin],
   data() {
     const validateDuration = function(rule, val, callback) {
       let reg = /^\d+(\.\d+)?$/;
@@ -156,7 +159,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(["setSelectedNftLend","setDeleteLend"]),
+    ...mapMutations(["setSelectedNftLend", "setDeleteLend"]),
     //关闭当前对话框
     handleClose() {
       this.$refs["ruleForm"].resetFields();
@@ -199,7 +202,7 @@ export default {
             duration, // 租期 单位为秒
             collateral // 抵押金 eth
           );
-          console.log(nfts,this.ruleForm.tokenId);
+          console.log(nfts, this.ruleForm.tokenId);
           this.setDeleteLend(this.ruleForm.tokenId.toString());
           this.handleClose();
         } catch (error) {

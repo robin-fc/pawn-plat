@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="确认信息"
+    :title="languagePackage.confirmRent"
     v-model="isShow"
     width="30%"
     :before-close="handleClose"

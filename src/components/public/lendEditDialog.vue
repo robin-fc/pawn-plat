@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="出租信息维护"
+    :title="languagePackage.lendEdit"
     v-model="isShow"
     width="30%"
     :before-close="handleClose"
@@ -12,27 +12,27 @@
       label-width="180px"
       class="demo-ruleForm"
     >
-      <el-form-item label="合约地址" prop="address">
+      <el-form-item :label="languagePackage.address" prop="address">
         {{ ruleForm.address }}
       </el-form-item>
-      <el-form-item label="NFT编号" prop="tokenId">
+      <el-form-item :label="languagePackage.tokenId" prop="tokenId">
         {{ ruleForm.tokenId }}
       </el-form-item>
-      <el-form-item label="租金（eth/天）" prop="price">
+      <el-form-item :label="languagePackage.dailyRentPrice" prop="price">
         <el-input-number
           v-model="ruleForm.price"
           :precision="2"
           :step="0.01"
         ></el-input-number>
       </el-form-item>
-      <el-form-item label="租期 (天)" prop="duration">
+      <el-form-item :label="languagePackage.duration" prop="duration">
         <el-input-number
           v-model="ruleForm.duration"
           :precision="1"
           :step="0.5"
         ></el-input-number>
       </el-form-item>
-      <el-form-item label="缴纳抵押金（eth）" prop="collateral">
+      <el-form-item :label="languagePackage.collateral" prop="collateral">
         <el-input-number
           v-model="ruleForm.collateral"
           :precision="2"
