@@ -42,8 +42,17 @@
       <el-form-item>
         <div class="modal-dialog-button">
           <div class="nft__control">
-            <button class="nft__button" type="button" @click="handleValid">
-              {{ languagePackage.confirmLend }}
+            <button
+              :class="isApproving ? 'nft__button disabled' : 'nft__button'"
+              type="button"
+              @click="handleValid"
+              :disabled="isApproving"
+            >
+              {{
+                isApproving
+                  ? languagePackage.confirmLend
+                  : languagePackage.isApproving
+              }}
             </button>
           </div>
         </div>
@@ -133,10 +142,11 @@ export default {
           },
         ],
       },
+      isApproving: false,
     };
   },
   computed: {
-    ...mapGetters(["selectedNftLend"]),
+    ...mapGetters(["selectedNftLend", "accounts"]),
   },
   watch: {
     selectedNftLend(val) {
@@ -150,8 +160,8 @@ export default {
     },
   },
   mounted() {
-    console.log(process.env.VUE_APP_ERC721_ADDRESS);
-    console.log(this.selectedNftLend[0]);
+    // console.log(process.env.VUE_APP_ERC721_ADDRESS);
+    // console.log(this.selectedNftLend[0]);
     if (this.selectedNftLend[0]) {
       this.isShow = true;
     } else {
@@ -171,18 +181,20 @@ export default {
         if (valid) {
           this.handleApprove();
         } else {
-          console.log("error submit!!");
+          // console.log("error submit!!");
           return false;
         }
       });
     },
     //ether.js通过rivermen合约向租赁合约授权
     async handleApprove() {
+      this.isApproving = true;
       await contactRivermen_signer.setApprovalForAll(
         process.env.VUE_APP_PAWNPLAT_ADDRESS,
         true
       );
-      this.handleLend();
+      await this.handleLend();
+      this.isApproving = false;
     },
     //调用租赁合约的lend函数进行出租，租赁合约保管挂单
     async handleLend() {

@@ -48,6 +48,7 @@ const DIC_ZH = {
   outOfTime: "超时，无法归还",
   confirmLend: "确认授权平台挂单",
   confirmRent: "确认租借信息",
+  isApproving: "请求已发起",
 };
 const DIC_EN = {
   connectWallet: "CONNECT WALLET",
@@ -100,5 +101,6 @@ const DIC_EN = {
   outOfTime: "Out of Time!",
   confirmLend: "Lend Now",
   confirmRent: "Approve & Confirm",
+  isApproving: "Pending",
 };
 export { DIC_ZH, DIC_EN };

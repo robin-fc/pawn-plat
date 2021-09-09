@@ -54,7 +54,7 @@
 
 <script>
 import { ethers } from "ethers"; //, providers
-import { contactRivermen_signer, contactPP_signer } from "@/api/contact";
+import { contactPP_signer } from "@/api/contact";
 import { mapGetters, mapMutations } from "vuex";
 import { ElMessage } from "element-plus";
 import languageMixin from "@/mixins/language";
@@ -175,20 +175,12 @@ export default {
     handleValid() {
       this.$refs["ruleForm"].validate((valid) => {
         if (valid) {
-          this.handleApprove();
+          this.handleUpdateLend();
         } else {
-          console.log("error submit!!");
+          // console.log("error submit!!");
           return false;
         }
       });
-    },
-    //ether.js通过rivermen合约向租赁合约授权
-    async handleApprove() {
-      await contactRivermen_signer.setApprovalForAll(
-        process.env.VUE_APP_PAWNPLAT_ADDRESS,
-        true
-      );
-      this.handleUpdateLend();
     },
     //调用租赁合约的lend函数更新挂单信息
     async handleUpdateLend() {
@@ -201,14 +193,14 @@ export default {
         .toHexString();
       if (this.ruleForm.tokenId) {
         try {
-          let nfts = await contactPP_signer.lend(
+          await contactPP_signer.updateLendingInfo(
             process.env.VUE_APP_ERC721_ADDRESS, // 河里人合约地址
             this.ruleForm.tokenId, // 每个河里人对应的tokenID
             price, // 设置租金/day
             duration, // 租期 单位为秒
             collateral // 抵押金 eth
           );
-          console.log(nfts, this.ruleForm.tokenId);
+          // console.log(nfts, this.ruleForm.tokenId);
           this.setLendUpdated(this.ruleForm.tokenId.toString());
           this.handleClose();
         } catch (error) {

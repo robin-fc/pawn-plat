@@ -78,7 +78,6 @@ export default {
   watch: {
     selectedNftRent(val) {
       if (val[0]) {
-        console.log(val[0]);
         this.ruleForm.tokenId = val[0].token_id;
         this.ruleForm.duration = val[0].duration;
         this.ruleForm.dailyRentPrice = val[0].dailyRentPrice;
@@ -107,7 +106,6 @@ export default {
       let s = ethers.utils
         .parseEther(this.ruleForm.totalRentPrice.toString())
         .toHexString();
-      console.log(this.ruleForm.totalRentPrice.toString());
       return s;
     },
     //关闭当前对话框
@@ -121,32 +119,23 @@ export default {
         if (valid) {
           this.handleRent();
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
     },
-    //ether.js通过rivermen合约向租赁合约授权
-    // async handleApprove() {
-    //   await contactRivermen_signer.setApprovalForAll(
-    //     process.env.VUE_APP_PAWNPLAT_ADDRESS,
-    //     true
-    //   );
-    //   this.handleRent();
-    // },
     //调用租赁合约的rent函数进行租赁，租赁合约签单
     async handleRent() {
       let totalRentPrice = this.handleCountTotal();
       if (this.ruleForm.tokenId) {
         try {
-          let nfts = await contactPP_signer.rent(
+          await contactPP_signer.rent(
             process.env.VUE_APP_ERC721_ADDRESS, // 河里人合约地址
             this.ruleForm.tokenId, // 每个河里人对应的tokenID
             {
               value: totalRentPrice,
             }
           );
-          console.log(nfts);
+          // console.log(nfts);
           this.setRentedNFT(this.ruleForm.tokenId.toString());
           this.handleClose();
         } catch (error) {

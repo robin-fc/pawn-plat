@@ -13,12 +13,22 @@
     <div class="modal-dialog-button">
       <div class="nft__control">
         <button
-          :class="exceedDutation ? 'nft__button disabled' : 'nft__button'"
-          :disabled="exceedDutation"
+          :class="
+            exceedDutation || isApproving
+              ? 'nft__button disabled'
+              : 'nft__button'
+          "
+          :disabled="exceedDutation || isApproving"
           type="button"
           @click="handleApprove"
         >
-          {{ exceedDutation ? languagePackage.outOfTime : languagePackage.repay }}
+          {{
+            exceedDutation
+              ? languagePackage.outOfTime
+              : isApproving
+              ? languagePackage.isApproving
+              : languagePackage.repay
+          }}
         </button>
       </div>
     </div>
@@ -42,6 +52,7 @@ export default {
       isShow: false,
       nft: { token_id: "", image_url: "" },
       exceedDutation: false,
+      isApproving: false,
     };
   },
   computed: {
@@ -63,11 +74,13 @@ export default {
     },
     //ether.js通过rivermen合约向租赁合约授权
     async handleApprove() {
+      this.isApproving = true;
       await contactRivermen_signer.setApprovalForAll(
         process.env.VUE_APP_PAWNPLAT_ADDRESS,
         true
       );
-      this.handleRepay();
+      await this.handleRepay();
+      this.isApproving = false;
     },
     //调用租赁合约的rent函数进行归还
     async handleRepay() {
