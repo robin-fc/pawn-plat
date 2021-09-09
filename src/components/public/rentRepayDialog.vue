@@ -82,6 +82,7 @@ export default {
       console.log(isApprovedForAll);
       if (isApprovedForAll) {
         ElMessage("已授权！");
+        this.handleRepay();
       } else {
         await contactRivermen_signer.setApprovalForAll(
           process.env.VUE_APP_PAWNPLAT_ADDRESS,

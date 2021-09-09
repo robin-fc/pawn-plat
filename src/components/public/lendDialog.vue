@@ -196,13 +196,14 @@ export default {
       console.log(isApprovedForAll);
       if (isApprovedForAll) {
         ElMessage("已授权！");
+        this.handleLend();
       } else {
         await contactRivermen_signer.setApprovalForAll(
           process.env.VUE_APP_PAWNPLAT_ADDRESS,
           true
         );
         await this.handleLend();
-      } 
+      }
       this.isApproving = false;
     },
     //调用租赁合约的lend函数进行出租，租赁合约保管挂单
