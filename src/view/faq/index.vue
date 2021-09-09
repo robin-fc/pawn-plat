@@ -39,6 +39,7 @@
             <span class="li-row">
               在此处设置你的租金，租期（最短半天），以及抵押金（租借NFT的那一方缴纳）。
             </span>
+            <img class="faq-img" src="assets/faq/how-to-lend-an-nft3.png" /> 
           </li>
           <li>
             <span class="li-span">
