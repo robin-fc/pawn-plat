@@ -254,7 +254,7 @@ export default {
       //从opensea拿此人所有没被租出去的资产，被租的已经查不到了
       let params = {
         owner: this.accounts[0],
-        // asset_contract_address: process.env.VUE_APP_RIVERMEN_ADDRESS,
+        asset_contract_address: process.env.VUE_APP_RIVERMEN_ADDRESS,
         order_direction: "desc",
         offset: 0,
         limit: 50,

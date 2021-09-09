@@ -273,7 +273,7 @@ export default {
           value ? "" : idsFromContact.push(nftsIdList[index]);
         });
         // owner=${this.accounts[0]}&
-        let url = `${process.env.VUE_APP_OPENSEA}?asset_contract_address=${process.env.VUE_APP_ERC721_ADDRESS}&order_direction=desc&offset=0`; //&collection=rivermen
+        let url = `${process.env.VUE_APP_OPENSEA}?asset_contract_address=${process.env.VUE_APP_ERC721_ADDRESS}&order_direction=desc&offset=0&collection=rivermen`; //&collection=rivermen
         //用户地址opensea的，包含他租了的
         let idsFromOpensea = [];
         fetch(url, { method: "GET" })
@@ -348,7 +348,7 @@ export default {
       try {
         let token_ids = "token_ids=" + ids.join("&token_ids=");
         //测试网
-        let url = `${process.env.VUE_APP_OPENSEA}?${token_ids}&order_direction=desc&offset=0&limit=${ids.length}`; //&collection=rivermen
+        let url = `${process.env.VUE_APP_OPENSEA}?${token_ids}&order_direction=desc&offset=0&limit=${ids.length}&collection=rivermen`; //&collection=rivermen
         //主网得加上河里人进行过滤
         // let url = `${process.env.VUE_APP_MAINFEST}?${token_ids}&asset_contract_address=${process.env.VUE_APP_RIVERMEN_ADDRESS}&order_direction=desc&offset=0&limit=${tIds.length}`;
         let res = await fetch(url, { method: "GET" })
