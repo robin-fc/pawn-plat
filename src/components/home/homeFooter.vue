@@ -12,12 +12,12 @@
       </a> -->
     </div>
     <div class="soc">
-      <a href="https://discord.gg/5Gjs7zKq45" target="_blank" rel="noreferrer">
+      <a href="https://discord.gg/6Qy7grRJ4R" target="_blank" rel="noreferrer">
         <span class="discord"></span>
       </a>
       <span class="gap"></span>
       <a
-        href="https://twitter.com/RivermenNFT"
+        href="https://twitter.com/Mela_YW"
         target="_blank"
         rel="noreferrer"
       >

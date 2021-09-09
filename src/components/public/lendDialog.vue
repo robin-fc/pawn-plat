@@ -189,11 +189,20 @@ export default {
     //ether.js通过rivermen合约向租赁合约授权
     async handleApprove() {
       this.isApproving = true;
-      await contactRivermen_signer.setApprovalForAll(
-        process.env.VUE_APP_PAWNPLAT_ADDRESS,
-        true
+      let isApprovedForAll = await contactRivermen_signer.isApprovedForAll(
+        this.accounts[0],
+        process.env.VUE_APP_PAWNPLAT_ADDRESS
       );
-      await this.handleLend();
+      console.log(isApprovedForAll);
+      if (isApprovedForAll) {
+        ElMessage("已授权！");
+      } else {
+        await contactRivermen_signer.setApprovalForAll(
+          process.env.VUE_APP_PAWNPLAT_ADDRESS,
+          true
+        );
+        await this.handleLend();
+      } 
       this.isApproving = false;
     },
     //调用租赁合约的lend函数进行出租，租赁合约保管挂单
