@@ -249,9 +249,9 @@ export default {
     async getNtfInfo(tIds) {
       let token_ids = "token_ids=" + tIds.join("&token_ids=");
       //测试网
-      let url = `${process.env.VUE_APP_RINKEBY}?${token_ids}&order_direction=desc&offset=0&limit=${tIds.length}&collection=rivermen`; //
+      let url = `${process.env.VUE_APP_OPENSEA}?${token_ids}&order_direction=desc&offset=0&limit=${tIds.length}&collection=rivermen`; //
       //主网
-      // let url = `${process.env.VUE_APP_RINKEBY}?${token_ids}&asset_contract_address=${process.env.VUE_APP_RIVERMEN_ADDRESS}&order_direction=desc&offset=0&limit=${tIds.length}`;
+      // let url = `${process.env.VUE_APP_OPENSEA}?${token_ids}&asset_contract_address=${process.env.VUE_APP_RIVERMEN_ADDRESS}&order_direction=desc&offset=0&limit=${tIds.length}`;
       fetch(url, { method: "GET" })
         .then((response) => response.json())
         .then(async (res) => {

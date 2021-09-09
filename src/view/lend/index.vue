@@ -260,7 +260,7 @@ export default {
         limit: 50,
       };
       axios
-        .get(process.env.VUE_APP_RINKEBY, {
+        .get(process.env.VUE_APP_OPENSEA, {
           params: params,
         })
         .then((res) => {
