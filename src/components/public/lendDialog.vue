@@ -50,8 +50,8 @@
             >
               {{
                 isApproving
-                  ? languagePackage.confirmLend
-                  : languagePackage.isApproving
+                  ? languagePackage.isApproving
+                  : languagePackage.confirmLend
               }}
             </button>
           </div>
