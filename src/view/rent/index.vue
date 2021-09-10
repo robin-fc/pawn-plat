@@ -296,7 +296,15 @@ export default {
             });
           }
         })
-        .catch((err) => console.error(err));
+        .catch((error) => {
+          this.$confirm(error.toString())
+            .then(() => {
+              console.log(error);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
+        });
     },
     //通过合约获取所有正在租赁的rivermen的id
     async RentNow(nft) {
@@ -385,7 +393,20 @@ export default {
           }
         }
       } catch (error) {
-        console.log(`${nft.token_id}-${index}`, dom, nft, value, meta, error);
+        this.$confirm(error.toString())
+          .then(() => {
+            console.log(
+              `${nft.token_id}-${index}`,
+              dom,
+              nft,
+              value,
+              meta,
+              error
+            );
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       }
     },
   },

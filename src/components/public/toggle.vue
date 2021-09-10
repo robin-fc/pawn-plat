@@ -33,6 +33,10 @@ export default {
     };
   },
   watch: {
+    language() {
+      this.switchTitle = "";
+      this.switchTitle = this.languagePackage.dashToggleTitle[this.toggleValue];
+    },
     toggleValue(val) {
       this.setToggleValue(val);
     },
@@ -43,7 +47,7 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["isLogin"]),
+    ...mapGetters(["isLogin","language"]),
   },
   methods: {
     ...mapMutations(["setToggleValue"]),

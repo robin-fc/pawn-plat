@@ -275,8 +275,14 @@ export default {
             // console.log(this.tokenList);
           }
         })
-        .catch((err) => {
-          console.log(err);
+        .catch((error) => {
+          this.$confirm(error.toString())
+            .then(() => {
+              console.log(error);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
         });
       this.loading = false;
     },

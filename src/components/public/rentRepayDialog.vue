@@ -56,7 +56,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["selectedNftRepay"]),
+    ...mapGetters(["selectedNftRepay", "accounts"]),
   },
   watch: {
     selectedNftRepay(val) {
@@ -111,8 +111,13 @@ export default {
         this.setRepaidNFT(this.selectedNftRepay[0].token_id);
         this.handleClose();
       } catch (error) {
-        console.log(error.message ? error.message : error);
-        if (error && error.code == "-32603") ElMessage(error.message);
+        this.$confirm(error.toString())
+          .then(() => {
+            console.log(error);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       }
     },
     dealChange(val) {

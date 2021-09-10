@@ -272,8 +272,8 @@ export default {
         arrIsInPool.forEach((value, index) => {
           value ? "" : idsFromContact.push(nftsIdList[index]);
         });
-        // owner=${this.accounts[0]}&
-        let url = `${process.env.VUE_APP_OPENSEA}?asset_contract_address=${process.env.VUE_APP_ERC721_ADDRESS}&order_direction=desc&offset=0&collection=rivermen`; //&collection=rivermen
+        // owner=${this.accounts[0]}&asset_contract_address=${process.env.VUE_APP_ERC721_ADDRESS}
+        let url = `${process.env.VUE_APP_OPENSEA}?owner=${this.accounts[0]}&order_direction=desc&offset=0&collection=rivermen`; //&collection=rivermen
         //用户地址opensea的，包含他租了的
         let idsFromOpensea = [];
         fetch(url, { method: "GET" })
@@ -296,7 +296,13 @@ export default {
             this.loading = false;
           });
       } catch (error) {
-        console.log(error);
+        this.$confirm(error.toString())
+          .then(() => {
+            console.log(error);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
         this.loading = false;
       }
     },
@@ -327,8 +333,16 @@ export default {
               ? idsInPool.push(nftsIdList[index])
               : idsOutOfPool.push(nftsIdList[index]);
           });
-          this.arrInPool = await this.getNtfInfo(idsInPool, true);
-          this.arrOutOfPool = await this.getNtfInfo(idsOutOfPool, false);
+          if (idsInPool.length) {
+            this.arrInPool = await this.getNtfInfo(idsInPool, true);
+          } else {
+            this.arrInPool = [];
+          }
+          if (idsOutOfPool.length) {
+            this.arrOutOfPool = await this.getNtfInfo(idsOutOfPool, false);
+          } else {
+            this.arrOutOfPool = [];
+          }
           console.log(this.arrInPool);
           console.log(this.arrOutOfPool);
           this.myListNftsLent = this.arrInPool.concat(this.arrOutOfPool);
@@ -336,7 +350,13 @@ export default {
           this.getLendValue(this.myListNfts.slice());
           this.loading = false;
         } catch (error) {
-          console.log(error);
+          this.$confirm(error.toString())
+            .then(() => {
+              console.log(error);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
           this.loading = false;
         }
       }
@@ -367,7 +387,13 @@ export default {
           });
         }
       } catch (error) {
-        console.log(error);
+        this.$confirm(error.toString())
+          .then(() => {
+            console.log(error);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       }
       return tempAssets;
     },
@@ -528,7 +554,20 @@ export default {
           }
         }
       } catch (error) {
-        console.log(`${nft.token_id}-${index}`, dom, nft, value, meta, error);
+        this.$confirm(error.toString())
+          .then(() => {
+            console.log(
+              `${nft.token_id}-${index}`,
+              dom,
+              nft,
+              value,
+              meta,
+              error
+            );
+          })
+          .catch((e) => {
+            console.log(e);
+          });
       }
     },
   },

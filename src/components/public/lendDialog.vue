@@ -228,7 +228,13 @@ export default {
           this.setDeleteLend(this.ruleForm.tokenId.toString());
           this.handleClose();
         } catch (error) {
-          ElMessage(error);
+          this.$confirm(error.toString())
+            .then(() => {
+              console.log(error);
+            })
+            .catch((e) => {
+              console.log(e);
+            });
         }
       } else {
         ElMessage("tokenId缺失");

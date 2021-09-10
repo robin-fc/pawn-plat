@@ -8,8 +8,6 @@ const DIC_ZH = {
   dashboard: "个人中心",
   faq: "常见问题解答",
   notion: "合约经过了彻底的测试和同行评审，但没有经过审计。使用风险自理。",
-  rentToggleTitle: ["可供租赁", "正在租赁"],
-  lendToggleTitle: ["可供出租", "正在出租"],
   dashToggleTitle: ["已经租入", "正在出租"],
   contractAddress: "合约地址",
   appVersion: "当前版本",
@@ -61,8 +59,6 @@ const DIC_EN = {
   faq: "FAQ",
   notion:
     "Contracts have been thoroughly tested and peer reviewed, but not audited. Use at your own risk.",
-  rentToggleTitle: ["AVAILABLE TO RENT", "RENTING"],
-  lendToggleTitle: ["AVAILABLE TO LEND", "LENDING"],
   dashToggleTitle: ["RENTED", "LENDING"],
   contractAddress: "Contract on etherscan",
   appVersion: "App version",
