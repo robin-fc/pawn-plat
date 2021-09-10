@@ -93,14 +93,13 @@
           <div class="nft__meta_title">{{ meta }}</div>
           <div class="nft__meta_dot"></div>
           <div class="nft__meta_value">
-            <a
+            <span
+              style="cursor:pointer"
               v-if="meta == 'Address' || meta == '合约地址'"
               :id="nft.token_id + '-' + key"
-              :href="getContentRow(nft, meta, key)"
-              target="_blank"
-              rel="noreferrer"
-            >
-            </a>
+              @click="jump(nft)"
+              >{{ getContentRow(nft, meta, key) }}
+            </span>
             <span v-else :id="nft.token_id + '-' + key"
               >{{ getContentRow(nft, meta, key) }}
             </span>
@@ -341,10 +340,10 @@ export default {
       try {
         switch (meta) {
           case "Address":
-            value = `https://cn.etherscan.com/address/${nft.asset_contract.address}`;
+            value = `https://etherscan.io/address/${nft.asset_contract.address}`;
             break;
           case "合约地址":
-            value = `https://cn.etherscan.com/address/${nft.asset_contract.address}`;
+            value = `https://etherscan.io/address/${nft.asset_contract.address}`;
             break;
           case "拥有者":
             value = nft.owner;
@@ -408,6 +407,10 @@ export default {
             console.log(e);
           });
       }
+    },
+    async jump(nft) {
+      let url = `https://etherscan.io/address/${nft.asset_contract.address}`;
+      window.open(url, "_blank");
     },
   },
 };

@@ -96,7 +96,7 @@
             <a
               v-if="meta == 'Address' || meta == '合约地址'"
               :id="nft.token_id + '-' + key"
-              :href="getContentRow(nft, meta, key)"
+              @click="jump(nft)"
               target="_blank"
               rel="noreferrer"
             >
@@ -508,10 +508,10 @@ export default {
       try {
         switch (meta) {
           case "Address":
-            value = `https://cn.etherscan.com/address/${nft.asset_contract.address}`;
+            value = `https://etherscan.io/address/${nft.asset_contract.address}`;
             break;
           case "合约地址":
-            value = `https://cn.etherscan.com/address/${nft.asset_contract.address}`;
+            value = `https://etherscan.io/address/${nft.asset_contract.address}`;
             break;
           case "Token id":
             value = nft.token_id;
@@ -569,6 +569,10 @@ export default {
             console.log(e);
           });
       }
+    },
+    async jump(nft) {
+      let url = `https://etherscan.io/address/${nft.asset_contract.address}`;
+      window.open(url, "_blank");
     },
   },
 };

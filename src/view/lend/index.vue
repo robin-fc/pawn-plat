@@ -88,10 +88,10 @@
           <img :alt="nft.description" :src="nft.image_url" />
         </div>
         <div class="nft__name">{{ `${nft.name}(${getZHName(nft.name)})` }}</div>
-        <div class="nft__meta_row">
+        <!-- <div class="nft__meta_row">
           <div class="nft__meta_title">{{ languagePackage.address }}</div>
           <div class="nft__meta_dot"></div>
-          <!-- <div class="nft__meta_value">
+          <div class="nft__meta_value">
           <a
             v-if="meta == 'Address' || meta == '合约地址'"
             :href="nft.nftAddress"
@@ -102,8 +102,8 @@
           <span>
             {{ getContentRow(nft, meta) }}
           </span>
-        </div> -->
         </div>
+        </div> -->
         <div class="nft__control">
           <button class="nft__button" type="button" @click="LentNow(nft)">
             {{ languagePackage.lendNow }}
@@ -229,9 +229,9 @@ export default {
     getContentRow(nft, meta) {
       switch (meta) {
         case "Address":
-          return `https://cn.etherscan.com/address/${nft.asset_contract.address}`;
+          return `https://etherscan.io/address/${nft.asset_contract.address}`;
         case "合约地址":
-          return `https://cn.etherscan.com/address/${nft.asset_contract.address}`;
+          return `https://etherscan.io/address/${nft.asset_contract.address}`;
         case "Token id":
           return nft.token_id;
         case "NFT编号":
