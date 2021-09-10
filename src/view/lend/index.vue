@@ -46,7 +46,6 @@
             "
             aria-disabled="false"
           >
-            <!-- @click="handleSelect(nft.token_id)" -->
             <span class="MuiIconButton-label"
               ><input
                 class="jss"
@@ -105,7 +104,20 @@
         </div>
         </div> -->
         <div class="nft__control">
-          <button class="nft__button" type="button" @click="LentNow(nft)">
+          <button
+            v-if="!isApprovedForAll"
+            class="nft__button"
+            type="button"
+            @click="handleClickToApprove()"
+          >
+            {{ languagePackage.approve }}
+          </button>
+          <button
+            v-else
+            class="nft__button"
+            type="button"
+            @click="LentNow(nft)"
+          >
             {{ languagePackage.lendNow }}
           </button>
         </div>
@@ -139,6 +151,7 @@ import dic from "@/model/counten.json";
 import languageMixin from "@/mixins/language";
 import { mapGetters, mapMutations } from "vuex";
 import { contactPP } from "@/api/contact";
+import { contactRivermen_signer } from "@/api/contact";
 
 export default {
   name: "lend",
@@ -152,20 +165,23 @@ export default {
       currentPage: 1,
       pageSize: 20,
       loading: false,
+      isApprovedForAll: false,
     };
   },
-  mounted() {
+  async mounted() {
     if (this.accounts[0]) {
       this.getAssetsFromOSByAddress();
+      this.isApprovedForAll = await this.judgeApprove();
     }
   },
   computed: {
     ...mapGetters(["accounts", "deleteLend", "keywords"]),
   },
   watch: {
-    accounts(val) {
+    async accounts(val) {
       if (val[0]) {
         this.getAssetsFromOSByAddress();
+        this.isApprovedForAll = await this.judgeApprove();
       }
     },
     deleteLend(val) {
@@ -192,6 +208,34 @@ export default {
   },
   methods: {
     ...mapMutations(["setSelectedNftLend"]),
+    async handleClickToApprove() {
+      try {
+        await contactRivermen_signer.setApprovalForAll(
+          process.env.VUE_APP_PAWNPLAT_ADDRESS,
+          true
+        );
+        this.$confirm("交易正在打包，请等待pending完成后刷新页面")
+          .then(() => {})
+          .catch((e) => {
+            console.log(e);
+          });
+      } catch (error) {
+        this.$confirm(error.message)
+          .then(() => {
+            console.log(error.code);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+    },
+    async judgeApprove() {
+      let isApproved = await contactRivermen_signer.isApprovedForAll(
+        this.accounts[0],
+        process.env.VUE_APP_PAWNPLAT_ADDRESS
+      );
+      return isApproved;
+    },
     initPagination() {
       this.total = 0;
       this.currentPage = 1;

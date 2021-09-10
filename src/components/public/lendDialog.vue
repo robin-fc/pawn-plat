@@ -42,17 +42,8 @@
       <el-form-item>
         <div class="modal-dialog-button">
           <div class="nft__control">
-            <button
-              :class="isApproving ? 'nft__button disabled' : 'nft__button'"
-              type="button"
-              @click="handleValid"
-              :disabled="isApproving"
-            >
-              {{
-                isApproving
-                  ? languagePackage.isApproving
-                  : languagePackage.confirmLend
-              }}
+            <button class="nft__button" type="button" @click="handleValid">
+              {{ languagePackage.confirmLend }}
             </button>
           </div>
         </div>
@@ -62,8 +53,8 @@
 </template>
 
 <script>
-import { ethers } from "ethers"; //, providers
-import { contactRivermen_signer, contactPP_signer } from "@/api/contact";
+import { ethers } from "ethers";
+import { contactPP_signer } from "@/api/contact";
 import { mapGetters, mapMutations } from "vuex";
 import { ElMessage } from "element-plus";
 import languageMixin from "@/mixins/language";
@@ -179,32 +170,12 @@ export default {
     handleValid() {
       this.$refs["ruleForm"].validate((valid) => {
         if (valid) {
-          this.handleApprove();
+          this.handleLend();
         } else {
           // console.log("error submit!!");
           return false;
         }
       });
-    },
-    //ether.js通过rivermen合约向租赁合约授权
-    async handleApprove() {
-      this.isApproving = true;
-      let isApprovedForAll = await contactRivermen_signer.isApprovedForAll(
-        this.accounts[0],
-        process.env.VUE_APP_PAWNPLAT_ADDRESS
-      );
-      console.log(isApprovedForAll);
-      if (isApprovedForAll) {
-        ElMessage("已授权！");
-        this.handleLend();
-      } else {
-        await contactRivermen_signer.setApprovalForAll(
-          process.env.VUE_APP_PAWNPLAT_ADDRESS,
-          true
-        );
-        await this.handleLend();
-      }
-      this.isApproving = false;
     },
     //调用租赁合约的lend函数进行出租，租赁合约保管挂单
     async handleLend() {

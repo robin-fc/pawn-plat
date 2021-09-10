@@ -13,21 +13,13 @@
     <div class="modal-dialog-button">
       <div class="nft__control">
         <button
-          :class="
-            exceedDutation || isApproving
-              ? 'nft__button disabled'
-              : 'nft__button'
-          "
-          :disabled="exceedDutation || isApproving"
+          :class="exceedDutation ? 'nft__button disabled' : 'nft__button'"
+          :disabled="exceedDutation"
           type="button"
-          @click="handleApprove"
+          @click="handleRepay"
         >
           {{
-            exceedDutation
-              ? languagePackage.outOfTime
-              : isApproving
-              ? languagePackage.isApproving
-              : languagePackage.repay
+            exceedDutation ? languagePackage.outOfTime : languagePackage.repay
           }}
         </button>
       </div>
@@ -36,9 +28,8 @@
 </template>
 
 <script>
-import { contactPP_signer, contactRivermen_signer } from "@/api/contact.js";
+import { contactPP_signer } from "@/api/contact.js";
 import { mapGetters, mapMutations } from "vuex";
-import { ElMessage } from "element-plus";
 import languageMixin from "@/mixins/language";
 /**
  * @description: 主动归还
@@ -52,7 +43,6 @@ export default {
       isShow: false,
       nft: { token_id: "", image_url: "" },
       exceedDutation: false,
-      isApproving: false,
     };
   },
   computed: {
@@ -71,34 +61,6 @@ export default {
     //关闭当前对话框
     handleClose() {
       this.setSelectedNftRepay([]);
-    },
-    //ether.js通过rivermen合约向租赁合约授权
-    async handleApprove() {
-      this.isApproving = true;
-      let isApprovedForAll = await contactRivermen_signer.isApprovedForAll(
-        this.accounts[0],
-        process.env.VUE_APP_PAWNPLAT_ADDRESS
-      );
-      console.log(isApprovedForAll);
-      if (isApprovedForAll) {
-        ElMessage("已授权！");
-        this.handleRepay();
-      } else {
-        await contactRivermen_signer.setApprovalForAll(
-          process.env.VUE_APP_PAWNPLAT_ADDRESS,
-          true
-        );
-        await this.handleRepay();
-      }
-      this.isApproving = false;
-
-      //  this.isApproving = true;
-      //   await contactRivermen_signer.setApprovalForAll(
-      //     process.env.VUE_APP_PAWNPLAT_ADDRESS,
-      //     true
-      //   );
-      //   await this.handleRepay();
-      //   this.isApproving = false;
     },
     //调用租赁合约的rent函数进行归还
     async handleRepay() {

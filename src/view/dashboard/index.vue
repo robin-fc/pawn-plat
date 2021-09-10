@@ -109,14 +109,22 @@
 
         <div class="nft__control">
           <button
-            v-if="dashboardToggleValue === 0"
+            v-if="dashboardToggleValue === 0 && !isApprovedForAll"
+            class="nft__button"
+            type="button"
+            @click="handleClickToApprove()"
+          >
+            {{ languagePackage.approve }}
+          </button>
+          <button
+            v-if="dashboardToggleValue === 0 && isApprovedForAll"
             class="nft__button"
             type="button"
             @click="handleRepay(nft)"
           >
             {{ languagePackage.repay }}
           </button>
-          <div v-else-if="nft.isInPool">
+          <div v-else-if="dashboardToggleValue === 1 && nft.isInPool">
             <button
               style="margin-right:10px"
               class="nft__button"
@@ -134,7 +142,7 @@
             </button>
           </div>
           <button
-            v-else-if="!nft.isInPool"
+            v-else-if="dashboardToggleValue === 1 && !nft.isInPool"
             class="nft__button"
             type="button"
             @click="handleClaim(nft)"
@@ -162,7 +170,7 @@ import dic from "@/model/counten.json";
 import { contactPP } from "@/api/contact.js";
 import { mapGetters, mapMutations } from "vuex";
 import languageMixin from "@/mixins/language";
-import { contactPP_signer } from "../../api/contact";
+import { contactRivermen_signer, contactPP_signer } from "../../api/contact";
 import { ElMessage } from "element-plus";
 
 export default {
@@ -190,6 +198,7 @@ export default {
               "Collateral [per item][eth]",
             ],
       loading: false,
+      isApprovedForAll: false,
     };
   },
   computed: {
@@ -204,9 +213,10 @@ export default {
     repaidNFT(val) {
       this.deleteNFT(val);
     },
-    accounts(val) {
+    async accounts(val) {
       if (val && val[0]) {
         this.getRented();
+        this.isApprovedForAll = await this.judgeApprove();
       }
     },
     dashboardToggleValue(val) {
@@ -244,9 +254,10 @@ export default {
       }
     },
   },
-  beforeMount() {
+  async beforeMount() {
     if (this.accounts && this.accounts[0]) {
       this.getRented();
+      this.isApprovedForAll = await this.judgeApprove();
     }
   },
   methods: {
@@ -368,7 +379,7 @@ export default {
       try {
         let token_ids = "token_ids=" + ids.join("&token_ids=");
         //测试网
-        let url = `${process.env.VUE_APP_OPENSEA}?${token_ids}&order_direction=desc&offset=0&limit=${ids.length}&collection=rivermen`; //&collection=rivermen
+        let url = `${process.env.VUE_APP_OPENSEA}?${token_ids}&order_direction=desc&offset=0&limit=${ids.length}`; //&collection=rivermen&collection=rivermen
         //主网得加上河里人进行过滤
         // let url = `${process.env.VUE_APP_MAINFEST}?${token_ids}&asset_contract_address=${process.env.VUE_APP_RIVERMEN_ADDRESS}&order_direction=desc&offset=0&limit=${tIds.length}`;
         let res = await fetch(url, { method: "GET" })
@@ -573,6 +584,34 @@ export default {
     async jump(nft) {
       let url = `https://etherscan.io/address/${nft.asset_contract.address}`;
       window.open(url, "_blank");
+    },
+    async handleClickToApprove() {
+      try {
+        await contactRivermen_signer.setApprovalForAll(
+          process.env.VUE_APP_PAWNPLAT_ADDRESS,
+          true
+        );
+        this.$confirm("交易正在打包，请等待pending完成后刷新页面")
+          .then(() => {})
+          .catch((e) => {
+            console.log(e);
+          });
+      } catch (error) {
+        this.$confirm(error.toString())
+          .then(() => {
+            console.log(error);
+          })
+          .catch((e) => {
+            console.log(e);
+          });
+      }
+    },
+    async judgeApprove() {
+      let isApproved = await contactRivermen_signer.isApprovedForAll(
+        this.accounts[0],
+        process.env.VUE_APP_PAWNPLAT_ADDRESS
+      );
+      return isApproved;
     },
   },
 };
